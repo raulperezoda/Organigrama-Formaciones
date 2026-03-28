@@ -581,13 +581,18 @@ function buildMes(y,m,orgData,tSet,prlSet){
  if(!FC[y])FC[y]=festivos(y,getEx());
  const fest=FC[y],dias=new Date(y,m,0).getDate(),pd=(new Date(y,m-1,1).getDay()+6)%7;
  const wrap=document.createElement('div');wrap.className='mes';
- let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px;background:var(--blue);color:var(--pri)">Dia</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Manna</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Tarde</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Teorica / PRL</th></tr></thead><tbody>';
- let dia=1;
+ let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px;background:var(--blue);color:var(--pri)">Dia</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Manhana</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Tarde</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Teorica / PRL</th></tr></thead><tbody>';
+ let dia=1,colActual=0;
  while(dia<=dias){
  h+='<tr>';
  for(let c=0;c<4;c++){
- if(c===0&&((dia===1&&pd>0)||dia>dias)){h+='<td class="vacio" style="width:35px"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td>';if(c===0){dia++;}continue;}
- if(c>0&&((dia===1&&pd>0)||dia>dias)){h+='<td class="vacio"></td>';if(c===3&&dia<=dias)dia++;continue;}
+ if(dia===1&&pd>0&&c<pd){
+ h+='<td class="vacio" style="width:40px"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td>';
+ break;
+ }else if(dia>dias){
+ h+='<td class="vacio" style="width:40px"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td>';
+ break;
+ }else{
  const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
  const dw=(new Date(isoD).getDay()+6)%7;
  let cls='';
@@ -598,25 +603,27 @@ function buildMes(y,m,orgData,tSet,prlSet){
  }else if(c===1){
  if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
  if(isoD===HOY)cls+=' hoy';
- let mannaPills='';
- if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('m')).forEach(d=>{mannaPills+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
- h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+mannaPills+'</td>';
+ let mp='';
+ if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('m')).forEach(d=>{mp+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+mp+'</td>';
  }else if(c===2){
  if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
  if(isoD===HOY)cls+=' hoy';
- let tardePills='';
- if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('t')).forEach(d=>{tardePills+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
- h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+tardePills+'</td>';
+ let tp='';
+ if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('t')).forEach(d=>{tp+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+tp+'</td>';
  }else if(c===3){
  if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
  if(isoD===HOY)cls+=' hoy';
- let exPills='';
- if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>exPills+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030;display:block;margin:1px 0;font-size:9px" title="'+(t.curso||'General')+' - '+t.desc+' ('+t.horas+'h)">T '+t.horas+'h'+(t.curso?' '+t.curso.slice(0,8):'')+'</span>');
- if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>exPills+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22;display:block;margin:1px 0;font-size:9px" title="'+(p.curso||'General')+' - '+p.modulo+' ('+p.horas+'h)">P '+p.horas+'h'+(p.curso?' '+p.curso.slice(0,8):'')+'</span>');
- h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+exPills+'</td>';
+ let ep='';
+ if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>ep+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030;display:block;margin:1px 0;font-size:9px" title="'+(t.curso||'General')+' - '+t.desc+' ('+t.horas+'h)">T:'+t.horas+'h'+(t.curso?' '+t.curso.slice(0,7):'')+'</span>');
+ if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>ep+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22;display:block;margin:1px 0;font-size:9px" title="'+(p.curso||'General')+' - '+p.modulo+' ('+p.horas+'h)">P:'+p.horas+'h'+(p.curso?' '+p.curso.slice(0,7):'')+'</span>');
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+ep+'</td>';
  }
  }
- h+='</tr>';if(dia>dias)break;
+ }
+ h+='</tr>';
+ dia++;
  }
  h+='</tbody></table>';wrap.innerHTML=h;return wrap;
 }
