@@ -53,8 +53,46 @@ table.data tr:hover td{background:#f4f8ff}
 .prog-row{display:flex;align-items:center;gap:8px;padding:8px;border-radius:6px;border:2px solid #e0e0e0;margin-bottom:5px;background:#fdfdfd}
 .prog-row .dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;border:2px solid rgba(0,0,0,.15)}
 .prog-row .txt{flex:1;font-size:11px;line-height:1.4}
-.info{background:#eaf4fb;border:1px solid #aed6f1;border-radius:5px;padding:7px 11px;font-size:11px;color:var(--sec)}
-</style>
+ .info{background:#eaf4fb;border:1px solid #aed6f1;border-radius:5px;padding:7px 11px;font-size:11px;color:var(--sec)}
+ @media (max-width:768px){
+ #app{height:auto;min-height:100vh;overflow:auto}
+ header{padding:8px 12px;flex-wrap:wrap}
+ header h1{font-size:12px}
+ header small,header .readonly-badge{display:none}
+ .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .tab{padding:8px 12px;font-size:11px}
+ .panels{flex-direction:column;overflow:visible}
+ .panel{padding:8px;overflow:visible}
+ #tab-org>div:first-child{flex-direction:column}
+ #tab-org>div:first-child>div:first-child{width:100%}
+ #tab-org>div:first-child>div:last-child{min-height:300px}
+ #tab-teoricas>div,#tab-prl>div{flex-direction:column}
+ #tab-teoricas>div>div:first-child,#tab-prl>div>div:first-child{width:100%}
+ #tab-teoricas>div>div:last-child,#tab-prl>div>div:last-child{flex:1}
+ #tab-docentes>div{flex-direction:column}
+ #tab-docentes>div>div:first-child{width:100%}
+ #tab-docentes>div>div:last-child{flex:1}
+ .card{padding:10px}
+ .calendarios{overflow-x:auto;flex-wrap:nowrap;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+ .mes{min-width:280px;flex-shrink:0}
+ .mes td{min-width:40px;font-size:9px;padding:2px}
+ .prog-row{flex-wrap:wrap}
+ .prog-row .txt{width:calc(100% - 30px)}
+ .row{flex-direction:column}
+ .row>*{min-width:100%}
+ table.data{font-size:11px}
+ table.data th,table.data td{padding:5px 6px}
+ }
+ @media (max-width:480px){
+ header h1{font-size:11px}
+ .tab{padding:6px 10px;font-size:10px}
+ .card-title{font-size:12px}
+ .scroll{max-height:250px}
+ .mes{min-width:260px}
+ .mes td{font-size:8px;padding:1px}
+ .mes th{font-size:9px;padding:3px 1px}
+ }
+ </style>
 </head>
 <body>
 <div id="app">
