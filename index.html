@@ -618,7 +618,32 @@ function elimProg(i) {
   var p = getPr();
   p.splice(i, 1);
   ls.s(K.pr, p);
+  _org = _org.filter(function(org) { return org.progIdx !== i; });
+  _org.forEach(function(org, idx) {
+    org.progIdx = idx;
+  });
+  G('btn-html').disabled = _org.length === 0;
+  G('btn-excel').disabled = _org.length === 0;
+  var resumenHtml = '';
+  _org.forEach(function(d) {
+    resumenHtml += '<div style="border-left:4px solid ' + d.bg + ';padding:7px 10px;margin-bottom:6px;background:#f8f9fa;border-radius:5px;font-size:11px;line-height:1.6;display:flex;align-items:flex-start;gap:8px">';
+    resumenHtml += '<div style="flex:1">';
+    resumenHtml += '<strong style="color:var(--pri)">' + d.lbl + '</strong><br>';
+    resumenHtml += '<span style="color:var(--mut)">' + turnoLbl(d.turno) + '</span><br>';
+    resumenHtml += esES(iso(d.ini)) + ' → ' + esES(iso(d.fin)) + '<br>';
+    resumenHtml += d.sess.length + ' días lectivos · ' + d.c.horas_totales + 'h totales';
+    resumenHtml += '</div>';
+    resumenHtml += '<button class="btn btn-red btn-sm" onclick="elimOrgByProgIdx(' + d.progIdx + ')" style="flex-shrink:0" title="Eliminar">X</button>';
+    resumenHtml += '</div>';
+  });
+  if (!_org.length) {
+    resumenHtml = '<p style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Sin cursos en el organigrama</p>';
+    G('resumen-org').style.display = 'none';
+  }
+  G('fichas-resumen').innerHTML = resumenHtml;
   renderListaProg();
+  renderCalOrg();
+  renderGantt();
 }
 
 function generarOrganigrama() {
@@ -626,14 +651,15 @@ function generarOrganigrama() {
   var cu = getCu();
   if (!pr.length) { alert('Añade al menos un curso.'); return; }
   _org = [];
-  pr.forEach(function(p) {
+  pr.forEach(function(p, i) {
     var c = cu[p.idx];
     if (!c) return;
     var result = calcOrg(new Date(p.inicio), parseFloat(c.horas_totales), parseFloat(p.hdia));
     _org.push({
       p: p, c: c, ini: result.ini, fin: result.fin, sess: result.sess,
       ss: new Set(result.sess.map(function(s) { return iso(s); })),
-      bg: p.bg, fg: p.fg, lbl: p.label || c.codigo, turno: p.turno
+      bg: p.bg, fg: p.fg, lbl: p.label || c.codigo, turno: p.turno,
+      progIdx: i
     });
   });
   G('btn-html').disabled = false;
@@ -641,15 +667,52 @@ function generarOrganigrama() {
   G('resumen-org').style.display = '';
   var resumenHtml = '';
   _org.forEach(function(d) {
-    resumenHtml += '<div style="border-left:4px solid ' + d.bg + ';padding:7px 10px;margin-bottom:6px;background:#f8f9fa;border-radius:5px;font-size:11px;line-height:1.6">';
+    resumenHtml += '<div style="border-left:4px solid ' + d.bg + ';padding:7px 10px;margin-bottom:6px;background:#f8f9fa;border-radius:5px;font-size:11px;line-height:1.6;display:flex;align-items:flex-start;gap:8px">';
+    resumenHtml += '<div style="flex:1">';
     resumenHtml += '<strong style="color:var(--pri)">' + d.lbl + '</strong><br>';
     resumenHtml += '<span style="color:var(--mut)">' + turnoLbl(d.turno) + '</span><br>';
     resumenHtml += esES(iso(d.ini)) + ' → ' + esES(iso(d.fin)) + '<br>';
     resumenHtml += d.sess.length + ' días lectivos · ' + d.c.horas_totales + 'h totales';
     resumenHtml += '</div>';
+    resumenHtml += '<button class="btn btn-red btn-sm" onclick="elimOrgByProgIdx(' + d.progIdx + ')" style="flex-shrink:0" title="Eliminar">X</button>';
+    resumenHtml += '</div>';
   });
   G('fichas-resumen').innerHTML = resumenHtml;
   renderCalOrg();
+}
+
+function elimOrgByProgIdx(progIdx) {
+  var p = getPr();
+  p.splice(progIdx, 1);
+  ls.s(K.pr, p);
+  _org = _org.filter(function(org) { return org.progIdx !== progIdx; });
+  _org.forEach(function(org, idx) {
+    org.progIdx = idx;
+  });
+  G('btn-html').disabled = _org.length === 0;
+  G('btn-excel').disabled = _org.length === 0;
+  var resumenHtml = '';
+  _org.forEach(function(d) {
+    resumenHtml += '<div style="border-left:4px solid ' + d.bg + ';padding:7px 10px;margin-bottom:6px;background:#f8f9fa;border-radius:5px;font-size:11px;line-height:1.6;display:flex;align-items:flex-start;gap:8px">';
+    resumenHtml += '<div style="flex:1">';
+    resumenHtml += '<strong style="color:var(--pri)">' + d.lbl + '</strong><br>';
+    resumenHtml += '<span style="color:var(--mut)">' + turnoLbl(d.turno) + '</span><br>';
+    resumenHtml += esES(iso(d.ini)) + ' → ' + esES(iso(d.fin)) + '<br>';
+    resumenHtml += d.sess.length + ' días lectivos · ' + d.c.horas_totales + 'h totales';
+    resumenHtml += '</div>';
+    resumenHtml += '<button class="btn btn-red btn-sm" onclick="elimOrgByProgIdx(' + d.progIdx + ')" style="flex-shrink:0" title="Eliminar">X</button>';
+    resumenHtml += '</div>';
+  });
+  if (!_org.length) {
+    resumenHtml = '<p style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Sin cursos en el organigrama</p>';
+    G('resumen-org').style.display = 'none';
+    G('btn-html').disabled = true;
+    G('btn-excel').disabled = true;
+  }
+  G('fichas-resumen').innerHTML = resumenHtml;
+  renderListaProg();
+  renderCalOrg();
+  renderGantt();
 }
 
 function buildMes(y, m, orgData, tSet, prlSet) {
