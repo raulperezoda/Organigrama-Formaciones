@@ -91,263 +91,263 @@ table.data tr.sel td{background:#ddeeff}
 
  <!-- ORGANIGRAMA -->
  <div id="tab-org" class="panel active">
-  <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
-  <div style="width:290px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
-   <div class="card">
-   <div class="card-title"> Entidad Financiadora</div>
-   <label>Tipo de entidad</label>
-   <select id="ent-tipo" onchange="cambiarEntidad()">
-    <option value="">— Sin especificar —</option>
-    <option value="Ayuntamiento"> Ayuntamiento</option>
-    <option value="Cámara de Comercio">🏢 Cámara de Comercio</option>
-    <option value="Junta de Andalucía"> Junta de Andalucía</option>
-    <option value="otro"> Otro...</option>
-   </select>
-   <div id="ent-otro-wrap" style="display:none">
-    <label>Especificar entidad</label>
-    <input type="text" id="ent-otro" placeholder="Nombre de la entidad..." oninput="guardarEntidad()">
-   </div>
-   <div id="ent-display" style="margin-top:6px;font-size:11px;font-weight:bold;color:var(--ok);display:none"></div>
-   </div>
-   <div class="card">
-   <div class="card-title">Cursos programados</div>
-   <div id="lista-prog"><p style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Sin cursos añadidos</p></div>
-   <button class="btn btn-ok" style="width:100%;margin-top:7px" onclick="abrirModalProg()">＋ Añadir curso / turno</button>
-   </div>
-   <div class="card">
-   <button class="btn btn-pri" style="width:100%;padding:9px;margin-bottom:6px" onclick="generarOrganigrama()">▶ GENERAR ORGANIGRAMA</button>
-   <button id="btn-html" class="btn btn-sec" style="width:100%;margin-bottom:5px" disabled onclick="exportarHTML()">🖨 Exportar HTML / PDF</button>
-   <button id="btn-excel" class="btn" style="width:100%;background:#217346;color:#fff" disabled onclick="exportarExcel()"> Exportar Excel completo</button>
-   </div>
-   <div class="card" id="resumen-org" style="display:none">
-   <div class="card-title">Resumen</div>
-   <div id="fichas-resumen"></div>
-   </div>
-  </div>
-  <div class="card scroll" style="flex:1;min-width:0">
-   <div id="cal-org" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--mut);font-size:13px">
-   Añade cursos a la izquierda y pulsa «Generar Organigrama»
-   </div>
-  </div>
-  </div>
+ <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
+ <div style="width:290px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+ <div class="card">
+ <div class="card-title"> Entidad Financiadora</div>
+ <label>Tipo de entidad</label>
+ <select id="ent-tipo" onchange="cambiarEntidad()">
+ <option value="">— Sin especificar —</option>
+ <option value="Ayuntamiento"> Ayuntamiento</option>
+ <option value="Cámara de Comercio">Cámara de Comercio</option>
+ <option value="Junta de Andalucía"> Junta de Andalucía</option>
+ <option value="otro"> Otro...</option>
+ </select>
+ <div id="ent-otro-wrap" style="display:none">
+ <label>Especificar entidad</label>
+ <input type="text" id="ent-otro" placeholder="Nombre de la entidad..." oninput="guardarEntidad()">
+ </div>
+ <div id="ent-display" style="margin-top:6px;font-size:11px;font-weight:bold;color:var(--ok);display:none"></div>
+ </div>
+ <div class="card">
+ <div class="card-title">Cursos programados</div>
+ <div id="lista-prog"><p style="color:var(--mut);font-size:11px;text-align:center;padding:8px">Sin cursos añadidos</p></div>
+ <button class="btn btn-ok" style="width:100%;margin-top:7px" onclick="abrirModalProg()">＋ Añadir curso / turno</button>
+ </div>
+ <div class="card">
+ <button class="btn btn-pri" style="width:100%;padding:9px;margin-bottom:6px" onclick="generarOrganigrama()">▶ GENERAR ORGANIGRAMA</button>
+ <button id="btn-html" class="btn btn-sec" style="width:100%;margin-bottom:5px" disabled onclick="exportarHTML()">Exportar HTML / PDF</button>
+ <button id="btn-excel" class="btn" style="width:100%;background:#217346;color:#fff" disabled onclick="exportarExcel()"> Exportar Excel completo</button>
+ </div>
+ <div class="card" id="resumen-org" style="display:none">
+ <div class="card-title">Resumen</div>
+ <div id="fichas-resumen"></div>
+ </div>
+ </div>
+ <div class="card scroll" style="flex:1;min-width:0">
+ <div id="cal-org" style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--mut);font-size:13px">
+ Añade cursos a la izquierda y pulsa «Generar Organigrama»
+ </div>
+ </div>
+ </div>
  </div>
 
  <!-- CURSOS -->
  <div id="tab-cursos" class="panel">
-  <div class="card" style="flex:1;display:flex;flex-direction:column;gap:8px">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-   <div class="card-title" style="margin:0">Catálogo de Cursos</div>
-   <div style="display:flex;gap:5px;flex-wrap:wrap">
-   <button class="btn btn-ok btn-sm" onclick="abrirModalCurso()">＋ Nuevo</button>
-   <button class="btn btn-sec btn-sm" onclick="editarCursoSel()">✏ Editar</button>
-   <button class="btn btn-red btn-sm" onclick="eliminarCursoSel()"> Eliminar</button>
-   <button class="btn btn-pur btn-sm" onclick="G('file-imp').click()"> Importar</button>
-   <input type="file" id="file-imp" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarFichero(this)">
-   <button class="btn btn-grey btn-sm" onclick="descargarPlantilla()"> Plantilla CSV</button>
-   </div>
-  </div>
-  <div class="info">CSV: <code>codigo ; nombre ; area ; horas_totales ; horas_diarias ; tipo ; entidad ; doc_teo ; doc_tal ; doc_prl</code> &nbsp;|&nbsp; Primero registra docentes en la pestaña <strong> Docentes</strong></div>
-  <div id="alert-cursos"></div>
-  <div class="scroll">
-   <table class="data"><thead><tr><th>Código</th><th>Nombre</th><th>Área</th><th>H. Tot.</th><th>H./Día</th><th>Tipo</th><th>Entidad</th><th>Docentes</th></tr></thead>
-   <tbody id="tbody-cursos"></tbody></table>
-  </div>
-  </div>
+ <div class="card" style="flex:1;display:flex;flex-direction:column;gap:8px">
+ <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+ <div class="card-title" style="margin:0">Catálogo de Cursos</div>
+ <div style="display:flex;gap:5px;flex-wrap:wrap">
+ <button class="btn btn-ok btn-sm" onclick="abrirModalCurso()">＋ Nuevo</button>
+ <button class="btn btn-sec btn-sm" onclick="editarCursoSel()">✏ Editar</button>
+ <button class="btn btn-red btn-sm" onclick="eliminarCursoSel()"> Eliminar</button>
+ <button class="btn btn-pur btn-sm" onclick="G('file-imp').click()"> Importar</button>
+ <input type="file" id="file-imp" accept=".csv,.xlsx,.xls" style="display:none" onchange="importarFichero(this)">
+ <button class="btn btn-grey btn-sm" onclick="descargarPlantilla()"> Plantilla CSV</button>
+ </div>
+ </div>
+ <div class="info">CSV: <code>codigo ; nombre ; area ; horas_totales ; horas_diarias ; tipo ; entidad ; doc_teo ; doc_tal ; doc_prl</code> &nbsp;|&nbsp; Primero registra docentes en la pestaña <strong> Docentes</strong></div>
+ <div id="alert-cursos"></div>
+ <div class="scroll">
+ <table class="data"><thead><tr><th>Código</th><th>Nombre</th><th>Área</th><th>H. Tot.</th><th>H./Día</th><th>Tipo</th><th>Entidad</th><th>Docentes</th></tr></thead>
+ <tbody id="tbody-cursos"></tbody></table>
+ </div>
+ </div>
  </div>
 
  <!-- TEÓRICAS -->
  <div id="tab-teoricas" class="panel">
-  <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
-  <div style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
-   <div class="card">
-   <div class="card-title"> Nueva Clase Teórica</div>
-   <label>Fecha</label><input type="date" id="t-fecha">
-   <label>Curso relacionado</label>
-   <select id="t-curso"><option value="">— General —</option></select>
-   <label>Módulo / Descripción</label>
-   <textarea id="t-desc" rows="2" placeholder="Ej: Módulo 1 – Introducción TIG"></textarea>
-   <label>Horas</label><input type="number" id="t-horas" value="2" min="0.5" step="0.5">
-   <button class="btn btn-ok" style="width:100%;margin-top:9px" onclick="añadirTeorica()"> Añadir</button>
-   </div>
-   <div class="card">
-   <div class="card-title">Filtro</div>
-   <label>Curso</label><select id="t-filtro" onchange="renderTeorica()"><option value="">— Todos —</option></select>
-   <div id="t-total" style="margin-top:6px;font-size:11px;color:var(--mut)"></div>
-   </div>
-  </div>
-  <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
-   <div class="card" style="flex-shrink:0">
-   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-    <div class="card-title" style="margin:0">Clases teóricas programadas</div>
-    <button class="btn btn-red btn-sm" onclick="eliminarTeoricaSel()"> Eliminar</button>
-   </div>
-   <div style="max-height:160px;overflow-y:auto">
-    <table class="data"><thead><tr><th>Fecha</th><th>Día</th><th>Curso</th><th>Descripción</th><th>H.</th></tr></thead>
-    <tbody id="tbody-teoricas"></tbody></table>
-   </div>
-   </div>
-   <div class="card scroll" style="flex:1">
-   <div class="card-title">Calendario — Clases Teóricas</div>
-   <div id="cal-teorica"></div>
-   </div>
-  </div>
-  </div>
+ <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
+ <div style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+ <div class="card">
+ <div class="card-title"> Nueva Clase Teórica</div>
+ <label>Fecha</label><input type="date" id="t-fecha">
+ <label>Curso relacionado</label>
+ <select id="t-curso"><option value="">— General —</option></select>
+ <label>Módulo / Descripción</label>
+ <textarea id="t-desc" rows="2" placeholder="Ej: Módulo 1 – Introducción TIG"></textarea>
+ <label>Horas</label><input type="number" id="t-horas" value="2" min="0.5" step="0.5">
+ <button class="btn btn-ok" style="width:100%;margin-top:9px" onclick="añadirTeorica()"> Añadir</button>
+ </div>
+ <div class="card">
+ <div class="card-title">Filtro</div>
+ <label>Curso</label><select id="t-filtro" onchange="renderTeorica()"><option value="">— Todos —</option></select>
+ <div id="t-total" style="margin-top:6px;font-size:11px;color:var(--mut)"></div>
+ </div>
+ </div>
+ <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
+ <div class="card" style="flex-shrink:0">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+ <div class="card-title" style="margin:0">Clases teóricas programadas</div>
+ <button class="btn btn-red btn-sm" onclick="eliminarTeoricaSel()"> Eliminar</button>
+ </div>
+ <div style="max-height:160px;overflow-y:auto">
+ <table class="data"><thead><tr><th>Fecha</th><th>Día</th><th>Curso</th><th>Descripción</th><th>H.</th></tr></thead>
+ <tbody id="tbody-teoricas"></tbody></table>
+ </div>
+ </div>
+ <div class="card scroll" style="flex:1">
+ <div class="card-title">Calendario — Clases Teóricas</div>
+ <div id="cal-teorica"></div>
+ </div>
+ </div>
+ </div>
  </div>
 
  <!-- PRL -->
  <div id="tab-prl" class="panel">
-  <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
-  <div style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
-   <div class="card">
-   <div class="card-title"> Nueva Sesión PRL</div>
-   <label>Fecha</label><input type="date" id="prl-fecha">
-   <label>Módulo PRL</label>
-   <select id="prl-modulo">
-    <option>Riesgos generales y específicos del sector metal</option>
-    <option>Equipos de Protección Individual (EPIs)</option>
-    <option>Riesgos específicos de soldadura</option>
-    <option>Riesgos específicos de tuberías y calderería</option>
-    <option>Prevención de incendios y planes de emergencia</option>
-    <option>Primeros auxilios básicos</option>
-    <option>Trabajos en altura</option>
-    <option>Espacios confinados</option>
-    <option>Manipulación manual de cargas</option>
-    <option>Riesgos eléctricos</option>
-    <option>Ruido y vibraciones</option>
-    <option>Humos de soldadura – Agentes químicos</option>
-    <option>Evaluación de riesgos del puesto</option>
-    <option>Normativa PRL – Ley 31/1995</option>
-    <option value="otro">Otro (escribir en notas)</option>
-   </select>
-   <label>Notas / Módulo personalizado</label>
-   <textarea id="prl-desc" rows="2" placeholder="Descripción adicional..."></textarea>
-   <label>Horas</label><input type="number" id="prl-horas" value="2" min="0.5" step="0.5">
-   <label>Curso relacionado</label>
-   <select id="prl-curso"><option value="">— General / Todos —</option></select>
-   <button class="btn btn-warn" style="width:100%;margin-top:9px" onclick="añadirPRL()"> Añadir sesión PRL</button>
-   </div>
-   <div class="card">
-   <div class="card-title">Resumen PRL</div>
-   <div id="prl-stats" style="font-size:11px;color:var(--mut)">Sin sesiones.</div>
-   <button class="btn btn-grey btn-sm" style="width:100%;margin-top:8px" onclick="exportarPRLExcel()"> Exportar Excel PRL</button>
-   </div>
-  </div>
-  <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
-   <div class="card" style="flex-shrink:0">
-   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
-    <div class="card-title" style="margin:0">Sesiones PRL programadas</div>
-    <button class="btn btn-red btn-sm" onclick="eliminarPRLSel()"> Eliminar</button>
-   </div>
-   <div style="max-height:160px;overflow-y:auto">
-    <table class="data"><thead><tr><th>Fecha</th><th>Día</th><th>Módulo</th><th>H.</th><th>Curso</th></tr></thead>
-    <tbody id="tbody-prl"></tbody></table>
-   </div>
-   </div>
-   <div class="card scroll" style="flex:1">
-   <div class="card-title">Calendario — PRL</div>
-   <div id="cal-prl"></div>
-   </div>
-  </div>
-  </div>
+ <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
+ <div style="width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+ <div class="card">
+ <div class="card-title"> Nueva Sesión PRL</div>
+ <label>Fecha</label><input type="date" id="prl-fecha">
+ <label>Módulo PRL</label>
+ <select id="prl-modulo">
+ <option>Riesgos generales y específicos del sector metal</option>
+ <option>Equipos de Protección Individual (EPIs)</option>
+ <option>Riesgos específicos de soldadura</option>
+ <option>Riesgos específicos de tuberías y calderería</option>
+ <option>Prevención de incendios y planes de emergencia</option>
+ <option>Primeros auxilios básicos</option>
+ <option>Trabajos en altura</option>
+ <option>Espacios confinados</option>
+ <option>Manipulación manual de cargas</option>
+ <option>Riesgos eléctricos</option>
+ <option>Ruido y vibraciones</option>
+ <option>Humos de soldadura – Agentes químicos</option>
+ <option>Evaluación de riesgos del puesto</option>
+ <option>Normativa PRL – Ley 31/1995</option>
+ <option value="otro">Otro (escribir en notas)</option>
+ </select>
+ <label>Notas / Módulo personalizado</label>
+ <textarea id="prl-desc" rows="2" placeholder="Descripción adicional..."></textarea>
+ <label>Horas</label><input type="number" id="prl-horas" value="2" min="0.5" step="0.5">
+ <label>Curso relacionado</label>
+ <select id="prl-curso"><option value="">— General / Todos —</option></select>
+ <button class="btn btn-warn" style="width:100%;margin-top:9px" onclick="añadirPRL()"> Añadir sesión PRL</button>
+ </div>
+ <div class="card">
+ <div class="card-title">Resumen PRL</div>
+ <div id="prl-stats" style="font-size:11px;color:var(--mut)">Sin sesiones.</div>
+ <button class="btn btn-grey btn-sm" style="width:100%;margin-top:8px" onclick="exportarPRLExcel()"> Exportar Excel PRL</button>
+ </div>
+ </div>
+ <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
+ <div class="card" style="flex-shrink:0">
+ <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+ <div class="card-title" style="margin:0">Sesiones PRL programadas</div>
+ <button class="btn btn-red btn-sm" onclick="eliminarPRLSel()"> Eliminar</button>
+ </div>
+ <div style="max-height:160px;overflow-y:auto">
+ <table class="data"><thead><tr><th>Fecha</th><th>Día</th><th>Módulo</th><th>H.</th><th>Curso</th></tr></thead>
+ <tbody id="tbody-prl"></tbody></table>
+ </div>
+ </div>
+ <div class="card scroll" style="flex:1">
+ <div class="card-title">Calendario — PRL</div>
+ <div id="cal-prl"></div>
+ </div>
+ </div>
+ </div>
  </div>
 
  <!-- GANTT -->
  <div id="tab-gantt" class="panel">
-  <div class="card" style="flex-shrink:0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-  <div class="card-title" style="margin:0"> Diagrama de Gantt</div>
-  <div style="display:flex;gap:6px">
-   <button class="btn btn-sec btn-sm" onclick="exportarGanttHTML()">🖨 Exportar / Imprimir</button>
-  </div>
-  </div>
-  <div class="card scroll" style="flex:1">
-  <div id="gantt-content" style="min-width:600px">
-   <p style="color:var(--mut);padding:20px;text-align:center">Genera el organigrama primero (pestaña <strong>Organigrama → Generar Organigrama</strong>)</p>
-  </div>
-  </div>
+ <div class="card" style="flex-shrink:0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+ <div class="card-title" style="margin:0"> Diagrama de Gantt</div>
+ <div style="display:flex;gap:6px">
+ <button class="btn btn-sec btn-sm" onclick="exportarGanttHTML()">Exportar / Imprimir</button>
+ </div>
+ </div>
+ <div class="card scroll" style="flex:1">
+ <div id="gantt-content" style="min-width:600px">
+ <p style="color:var(--mut);padding:20px;text-align:center">Genera el organigrama primero (pestaña <strong>Organigrama → Generar Organigrama</strong>)</p>
+ </div>
+ </div>
  </div>
 
  <!-- DOCENTES -->
  <div id="tab-docentes" class="panel">
-  <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
-  <div style="width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
-   <div class="card">
-   <div class="card-title"> Añadir Docente</div>
-   <label>Nombre completo</label>
-   <input type="text" id="doc-nombre" placeholder="Ej: Juan García López">
-   <label>DNI / NIE</label>
-   <input type="text" id="doc-dni" placeholder="Ej: 12345678A">
-   <label>Especialización</label>
-   <select id="doc-espec">
-    <option value="soldadura"> Soldadura</option>
-    <option value="tuberia"> Tuberías y Calderería</option>
-    <option value="mecanica"> Mecánica Industrial</option>
-    <option value="electricidad"> Electricidad</option>
-    <option value="electronica"> Electrónica</option>
-    <option value="teoria"> Teoría General</option>
-    <option value="prl"> PRL / Seguridad</option>
-    <option value="general"> General</option>
-   </select>
-   <label>Teléfono</label>
-   <input type="text" id="doc-tel" placeholder="Ej: 600 123 456">
-   <label>Email</label>
-   <input type="email" id="doc-email" placeholder="Ej: juan@email.com">
-   <label>Notas</label>
-   <textarea id="doc-notas" rows="2" placeholder="Observaciones..."></textarea>
-   <button class="btn btn-ok" style="width:100%;margin-top:9px" onclick="guardarDocente()"> Guardar docente</button>
-   </div>
-   <div class="card">
-   <div class="card-title">Estadísticas</div>
-   <div id="doc-stats" style="font-size:11px;color:var(--mut)"></div>
-   </div>
-  </div>
-  <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
-   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-   <div class="card" style="flex:1;margin:0">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-    <div class="card-title" style="margin:0">Directorio de Docentes</div>
-    <div style="display:flex;gap:5px">
-     <button class="btn btn-sec btn-sm" onclick="editarDocenteSel()">✏ Editar</button>
-     <button class="btn btn-red btn-sm" onclick="eliminarDocenteSel()"> Eliminar</button>
-    </div>
-    </div>
-    <div id="alert-doc" style="margin-top:6px"></div>
-    <div class="scroll" style="margin-top:8px">
-    <table class="data"><thead><tr><th>Nombre</th><th>DNI</th><th>Especialización</th><th>Contacto</th><th>Notas</th></tr></thead>
-    <tbody id="tbody-docentes"></tbody></table>
-    </div>
-   </div>
-   </div>
-   <div class="card" style="flex:1;overflow:auto">
-   <div class="card-title">Asignaciones vigentes</div>
-   <div id="doc-asignaciones" style="font-size:11px;line-height:1.7"></div>
-   </div>
-  </div>
-  </div>
+ <div style="display:flex;gap:9px;flex:1;overflow:hidden;min-height:0">
+ <div style="width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+ <div class="card">
+ <div class="card-title"> Añadir Docente</div>
+ <label>Nombre completo</label>
+ <input type="text" id="doc-nombre" placeholder="Ej: Juan García López">
+ <label>DNI / NIE</label>
+ <input type="text" id="doc-dni" placeholder="Ej: 12345678A">
+ <label>Especialización</label>
+ <select id="doc-espec">
+ <option value="soldadura"> Soldadura</option>
+ <option value="tuberia"> Tuberías y Calderería</option>
+ <option value="mecanica"> Mecánica Industrial</option>
+ <option value="electricidad"> Electricidad</option>
+ <option value="electronica"> Electrónica</option>
+ <option value="teoria"> Teoría General</option>
+ <option value="prl"> PRL / Seguridad</option>
+ <option value="general"> General</option>
+ </select>
+ <label>Teléfono</label>
+ <input type="text" id="doc-tel" placeholder="Ej: 600 123 456">
+ <label>Email</label>
+ <input type="email" id="doc-email" placeholder="Ej: juan@email.com">
+ <label>Notas</label>
+ <textarea id="doc-notas" rows="2" placeholder="Observaciones..."></textarea>
+ <button class="btn btn-ok" style="width:100%;margin-top:9px" onclick="guardarDocente()"> Guardar docente</button>
+ </div>
+ <div class="card">
+ <div class="card-title">Estadísticas</div>
+ <div id="doc-stats" style="font-size:11px;color:var(--mut)"></div>
+ </div>
+ </div>
+ <div style="flex:1;display:flex;flex-direction:column;gap:8px;min-width:0;overflow:hidden">
+ <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+ <div class="card" style="flex:1;margin:0">
+ <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+ <div class="card-title" style="margin:0">Directorio de Docentes</div>
+ <div style="display:flex;gap:5px">
+ <button class="btn btn-sec btn-sm" onclick="editarDocenteSel()">✏ Editar</button>
+ <button class="btn btn-red btn-sm" onclick="eliminarDocenteSel()"> Eliminar</button>
+ </div>
+ </div>
+ <div id="alert-doc" style="margin-top:6px"></div>
+ <div class="scroll" style="margin-top:8px">
+ <table class="data"><thead><tr><th>Nombre</th><th>DNI</th><th>Especialización</th><th>Contacto</th><th>Notas</th></tr></thead>
+ <tbody id="tbody-docentes"></tbody></table>
+ </div>
+ </div>
+ </div>
+ <div class="card" style="flex:1;overflow:auto">
+ <div class="card-title">Asignaciones vigentes</div>
+ <div id="doc-asignaciones" style="font-size:11px;line-height:1.7"></div>
+ </div>
+ </div>
+ </div>
  </div>
 
  <!-- FESTIVOS -->
  <div id="tab-festivos" class="panel">
-  <div class="card" style="flex:1;display:flex;flex-direction:column;gap:8px">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
-   <div class="card-title" style="margin:0">Festivos — Calendario Laboral Cádiz</div>
-   <div style="display:flex;align-items:center;gap:6px">
-   <label style="margin:0;font-size:12px">Año:</label>
-   <input type="number" id="anyo-fest" value="2026" min="2024" max="2040" style="width:78px" onchange="renderFestivos()">
-   </div>
-  </div>
-  <div class="info"> Automáticos = nacionales + Andalucía + Cádiz. Puedes añadir festivos extra.</div>
-  <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
-   <div><label style="margin-top:0">Fecha (DD/MM/AAAA)</label><input type="text" id="f-fecha" placeholder="03/03/2025" style="width:130px"></div>
-   <div style="flex:1"><label style="margin-top:0">Descripción</label><input type="text" id="f-nombre" placeholder="Festivo local..."></div>
-   <button class="btn btn-ok btn-sm" onclick="añadirFestivo()"> Añadir</button>
-   <button class="btn btn-red btn-sm" onclick="eliminarFestivoSel()"> Quitar</button>
-  </div>
-  <div id="alert-fest"></div>
-  <div class="scroll">
-   <table class="data"><thead><tr><th>Fecha</th><th>Descripción</th><th>Tipo</th></tr></thead>
-   <tbody id="tbody-fest"></tbody></table>
-  </div>
-  </div>
+ <div class="card" style="flex:1;display:flex;flex-direction:column;gap:8px">
+ <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+ <div class="card-title" style="margin:0">Festivos — Calendario Laboral Cádiz</div>
+ <div style="display:flex;align-items:center;gap:6px">
+ <label style="margin:0;font-size:12px">Año:</label>
+ <input type="number" id="anyo-fest" value="2026" min="2024" max="2040" style="width:78px" onchange="renderFestivos()">
+ </div>
+ </div>
+ <div class="info"> Automáticos = nacionales + Andalucía + Cádiz. Puedes añadir festivos extra.</div>
+ <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+ <div><label style="margin-top:0">Fecha (DD/MM/AAAA)</label><input type="text" id="f-fecha" placeholder="03/03/2025" style="width:130px"></div>
+ <div style="flex:1"><label style="margin-top:0">Descripción</label><input type="text" id="f-nombre" placeholder="Festivo local..."></div>
+ <button class="btn btn-ok btn-sm" onclick="añadirFestivo()"> Añadir</button>
+ <button class="btn btn-red btn-sm" onclick="eliminarFestivoSel()"> Quitar</button>
+ </div>
+ <div id="alert-fest"></div>
+ <div class="scroll">
+ <table class="data"><thead><tr><th>Fecha</th><th>Descripción</th><th>Tipo</th></tr></thead>
+ <tbody id="tbody-fest"></tbody></table>
+ </div>
+ </div>
  </div>
  </div>
 </div>
@@ -357,58 +357,58 @@ table.data tr.sel td{background:#ddeeff}
  <div class="modal">
  <h2>Añadir Curso al Organigrama</h2>
  <div style="background:#eaf4fb;border:1px solid #aed6f1;border-radius:6px;padding:10px 12px;margin-bottom:10px">
-  <div style="font-size:11px;font-weight:bold;color:var(--pri);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px"> Docentes (si differs del curso)</div>
-  <label style="margin-top:0">Docente — Teoría</label>
-  <select id="mp-doc-teo" onchange="handleCustomDoc(this,'mp-doc-teo-custom')">
-  <option value="">— Igual que el curso —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mp-doc-teo-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
-  <label>Docente — Taller</label>
-  <select id="mp-doc-pra" onchange="handleCustomDoc(this,'mp-doc-pra-custom')">
-  <option value="">— Igual que el curso —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mp-doc-pra-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
-  <label>Docente — PRL</label>
-  <select id="mp-doc-seg" onchange="handleCustomDoc(this,'mp-doc-seg-custom')">
-  <option value="">— Igual que el curso —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mp-doc-seg-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
+ <div style="font-size:11px;font-weight:bold;color:var(--pri);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px"> Docentes (si differs del curso)</div>
+ <label style="margin-top:0">Docente — Teoría</label>
+ <select id="mp-doc-teo" onchange="handleCustomDoc(this,'mp-doc-teo-custom')">
+ <option value="">— Igual que el curso —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mp-doc-teo-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
+ <label>Docente — Taller</label>
+ <select id="mp-doc-pra" onchange="handleCustomDoc(this,'mp-doc-pra-custom')">
+ <option value="">— Igual que el curso —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mp-doc-pra-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
+ <label>Docente — PRL</label>
+ <select id="mp-doc-seg" onchange="handleCustomDoc(this,'mp-doc-seg-custom')">
+ <option value="">— Igual que el curso —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mp-doc-seg-custom" data-custom="1" placeholder="Escribe nombre..." style="display:none;margin-top:4px">
  </div>
  <label>Curso</label><select id="mp-curso"></select>
  <div class="row" style="margin-top:4px">
-  <div><label>Fecha de inicio</label><input type="date" id="mp-inicio"></div>
-  <div><label>Turno</label>
-  <select id="mp-turno">
-   <option value="m7"> Mañana 7h (08:00–15:00)</option>
-   <option value="t7"> Tarde 7h (15:00–22:00)</option>
-   <option value="m6"> Mañana 6h (08:00–14:00)</option>
-   <option value="t6"> Tarde 6h (16:00–22:00)</option>
-  </select>
-  </div>
+ <div><label>Fecha de inicio</label><input type="date" id="mp-inicio"></div>
+ <div><label>Turno</label>
+ <select id="mp-turno">
+ <option value="m7"> Mañana 7h (08:00–15:00)</option>
+ <option value="t7"> Tarde 7h (15:00–22:00)</option>
+ <option value="m6"> Mañana 6h (08:00–14:00)</option>
+ <option value="t6"> Tarde 6h (16:00–22:00)</option>
+ </select>
+ </div>
  </div>
  <div class="row">
-  <div><label>Horas/día (deja vacío para usar el del turno)</label><input type="number" id="mp-hdia" min="1" step="0.5" placeholder="Ej: 7"></div>
-  <div><label>Color en el calendario</label>
-  <select id="mp-color">
-   <option value="#a9dfbf|#145a32"> Verde</option>
-   <option value="#aed6f1|#1a5276"> Azul</option>
-   <option value="#fad7a0|#784212"> Naranja</option>
-   <option value="#d7bde2|#4a235a"> Morado</option>
-   <option value="#fadbd8|#922b21"> Rosa</option>
-   <option value="#fef3cd|#7d6608"> Amarillo</option>
-   <option value="#d5f5e3|#1e8449"> Menta</option>
-   <option value="#ebdef0|#6c3483"> Lavanda</option>
-  </select>
-  </div>
+ <div><label>Horas/día (deja vacío para usar el del turno)</label><input type="number" id="mp-hdia" min="1" step="0.5" placeholder="Ej: 7"></div>
+ <div><label>Color en el calendario</label>
+ <select id="mp-color">
+ <option value="#a9dfbf|#145a32"> Verde</option>
+ <option value="#aed6f1|#1a5276"> Azul</option>
+ <option value="#fad7a0|#784212"> Naranja</option>
+ <option value="#d7bde2|#4a235a"> Morado</option>
+ <option value="#fadbd8|#922b21"> Rosa</option>
+ <option value="#fef3cd|#7d6608"> Amarillo</option>
+ <option value="#d5f5e3|#1e8449"> Menta</option>
+ <option value="#ebdef0|#6c3483"> Lavanda</option>
+ </select>
+ </div>
  </div>
  <label>Etiqueta personalizada (opcional)</label>
  <input type="text" id="mp-label" placeholder="Ej: Soldadura Mañana">
  <div class="mfooter">
-  <button class="btn btn-grey" onclick="G('modal-prog').classList.remove('open')">Cancelar</button>
-  <button class="btn btn-pri" onclick="guardarProg()"> Añadir</button>
+ <button class="btn btn-grey" onclick="G('modal-prog').classList.remove('open')">Cancelar</button>
+ <button class="btn btn-pri" onclick="guardarProg()"> Añadir</button>
  </div>
  </div>
 </div>
@@ -418,45 +418,45 @@ table.data tr.sel td{background:#ddeeff}
  <div class="modal">
  <h2 id="mc-titulo">Nuevo Curso</h2>
  <div class="row">
-  <div><label>Código</label><input type="text" id="mc-cod" placeholder="FMEC17EXP"></div>
-  <div><label>Área</label><input type="text" id="mc-area" placeholder="Soldadura"></div>
+ <div><label>Código</label><input type="text" id="mc-cod" placeholder="FMEC17EXP"></div>
+ <div><label>Área</label><input type="text" id="mc-area" placeholder="Soldadura"></div>
  </div>
  <label>Nombre completo</label><input type="text" id="mc-nom" placeholder="Soldadura Básica Nivel 1">
  <div class="row">
-  <div><label>Horas totales</label><input type="number" id="mc-htot" min="1" step="0.5"></div>
-  <div><label>H./día por defecto</label><input type="number" id="mc-hdia" min="1" step="0.5" value="7"></div>
+ <div><label>Horas totales</label><input type="number" id="mc-htot" min="1" step="0.5"></div>
+ <div><label>H./día por defecto</label><input type="number" id="mc-hdia" min="1" step="0.5" value="7"></div>
  </div>
  <label>Tipo</label>
  <select id="mc-tipo">
-  <option value="Programa Formativo">Programa Formativo (PF)</option>
-  <option value="Certificado de Profesionalidad">Certificado de Profesionalidad (CP)</option>
+ <option value="Programa Formativo">Programa Formativo (PF)</option>
+ <option value="Certificado de Profesionalidad">Certificado de Profesionalidad (CP)</option>
  </select>
  <label>Entidad financiadora</label>
  <input type="text" id="mc-entidad" placeholder="SEPE, FUNDAE, empresa privada...">
  <div style="background:#eaf4fb;border:1px solid #aed6f1;border-radius:6px;padding:10px 12px;margin-top:8px">
-  <div style="font-size:11px;font-weight:bold;color:var(--pri);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px"> Docentes del curso</div>
-  <label style="margin-top:0">Docente — Teoría</label>
-  <select id="mc-doc-teo" onchange="handleCustomDoc(this,'mc-doc-teo-custom')">
-  <option value="">— No asignado —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mc-doc-teo-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
-  <label>Docente — Taller</label>
-  <select id="mc-doc-tal" onchange="handleCustomDoc(this,'mc-doc-tal-custom')">
-  <option value="">— No asignado —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mc-doc-tal-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
-  <label>Docente — PRL</label>
-  <select id="mc-doc-prl" onchange="handleCustomDoc(this,'mc-doc-prl-custom')">
-  <option value="">— No asignado —</option>
-  <option value="__custom__"> Otro (escribir)...</option>
-  </select>
-  <input type="text" id="mc-doc-prl-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
+ <div style="font-size:11px;font-weight:bold;color:var(--pri);margin-bottom:6px;text-transform:uppercase;letter-spacing:.3px"> Docentes del curso</div>
+ <label style="margin-top:0">Docente — Teoría</label>
+ <select id="mc-doc-teo" onchange="handleCustomDoc(this,'mc-doc-teo-custom')">
+ <option value="">— No asignado —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mc-doc-teo-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
+ <label>Docente — Taller</label>
+ <select id="mc-doc-tal" onchange="handleCustomDoc(this,'mc-doc-tal-custom')">
+ <option value="">— No asignado —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mc-doc-tal-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
+ <label>Docente — PRL</label>
+ <select id="mc-doc-prl" onchange="handleCustomDoc(this,'mc-doc-prl-custom')">
+ <option value="">— No asignado —</option>
+ <option value="__custom__"> Otro (escribir)...</option>
+ </select>
+ <input type="text" id="mc-doc-prl-custom" data-custom="1" placeholder="Escribe nombre del docente..." style="display:none;margin-top:4px">
  </div>
  <div class="mfooter">
-  <button class="btn btn-grey" onclick="G('modal-curso').classList.remove('open')">Cancelar</button>
-  <button class="btn btn-pri" onclick="guardarCurso()"> Guardar</button>
+ <button class="btn btn-grey" onclick="G('modal-curso').classList.remove('open')">Cancelar</button>
+ <button class="btn btn-pri" onclick="guardarCurso()"> Guardar</button>
  </div>
  </div>
 </div>
@@ -552,16 +552,16 @@ function renderListaProg(){
  let finStr='calculando…',nDias='';
  try{const{fin,sess}=calcOrg(new Date(p.inicio),parseFloat(c.horas_totales),parseFloat(p.hdia));finStr=esES(iso(fin));nDias=sess.length+' días lectivos';}catch(e){}
  return '<div class="prog-row" style="border-color:'+p.bg+'">'
-  +'<div class="dot" style="background:'+p.bg+'"></div>'
-  +'<div class="txt"><strong style="color:var(--pri)">'+p.label+'</strong><br>'
-  +'<span style="color:var(--mut)">'+turnoLbl(p.turno)+'</span><br>'
-  +' <strong>'+esES(p.inicio)+'</strong> → <strong>'+finStr+'</strong><br>'
-  +'<span style="font-size:10px;color:var(--mut)">'+c.horas_totales+'h totales · '+p.hdia+'h/día · '+nDias+'</span>'
-  +(c.entidad?'<div style="margin-top:2px"><span class="badge" style="background:#d6eaf8;color:#1a5276;font-size:9px"> '+c.entidad+'</span></div>':'')
-  +((p.docTeo||p.docPra||p.docSeg||c.docTeo||c.docTal||c.docPRL)?'<div style="font-size:10px;color:#2471a3;margin-top:3px;line-height:1.5">'+((p.docTeo||c.docTeo)?' '+(p.docTeo||c.docTeo)+'<br>':'')+((p.docPra||c.docTal)?' '+(p.docPra||c.docTal)+'<br>':'')+((p.docSeg||c.docPRL)?' '+(p.docSeg||c.docPRL):'')+'</div>':'')
-  +'</div>'
-  +'<button class="btn btn-red btn-sm" onclick="elimProg('+i+')" style="flex-shrink:0"></button>'
-  +'</div>';
+ +'<div class="dot" style="background:'+p.bg+'"></div>'
+ +'<div class="txt"><strong style="color:var(--pri)">'+p.label+'</strong><br>'
+ +'<span style="color:var(--mut)">'+turnoLbl(p.turno)+'</span><br>'
+ +' <strong>'+esES(p.inicio)+'</strong> → <strong>'+finStr+'</strong><br>'
+ +'<span style="font-size:10px;color:var(--mut)">'+c.horas_totales+'h totales · '+p.hdia+'h/día · '+nDias+'</span>'
+ +(c.entidad?'<div style="margin-top:2px"><span class="badge" style="background:#d6eaf8;color:#1a5276;font-size:9px"> '+c.entidad+'</span></div>':'')
+ +((p.docTeo||p.docPra||p.docSeg||c.docTeo||c.docTal||c.docPRL)?'<div style="font-size:10px;color:#2471a3;margin-top:3px;line-height:1.5">'+((p.docTeo||c.docTeo)?' '+(p.docTeo||c.docTeo)+'<br>':'')+((p.docPra||c.docTal)?' '+(p.docPra||c.docTal)+'<br>':'')+((p.docSeg||c.docPRL)?' '+(p.docSeg||c.docPRL):'')+'</div>':'')
+ +'</div>'
+ +'<button class="btn btn-red btn-sm" onclick="elimProg('+i+')" style="flex-shrink:0"></button>'
+ +'</div>';
  }).join('');
 }
 function elimProg(i){const p=getPr();p.splice(i,1);ls.s(K.pr,p);renderListaProg();}
@@ -586,19 +586,19 @@ function buildMes(y,m,orgData,tSet,prlSet){
  while(dia<=dias){
  h+='<tr>';
  for(let c=0;c<7;c++){
-  if((dia===1&&c<pd)||dia>dias){h+='<td class="vacio"></td>';}
-  else{
-  const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
-  const dw=(new Date(isoD).getDay()+6)%7;
-  let cls='',cont='<div style="font-weight:bold;font-size:11px;color:#333;line-height:1.6">'+dia+'</div>';
-  if(fest[isoD]){cls='fest';cont+='<span class="pill" style="background:rgba(146,43,33,.12);color:#922b21;font-size:8px;border:1px solid rgba(146,43,33,.25)" title="'+fest[isoD]+'"> Festivo</span>';}
-  else if(dw>=5)cls='finde';
-  if(isoD===HOY)cls+=' hoy';
-  if(orgData)orgData.forEach(d=>{if(d.ss.has(isoD))cont+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1)" title="'+d.lbl+' · '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,10)+'</span>';});
-  if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>cont+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030" title=" '+(t.curso||'General')+'\n'+t.desc+' ('+t.horas+'h)"> '+(t.curso?t.curso.slice(0,9):'General')+'</span>');
-  if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>cont+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22" title=" '+(p.curso||'General')+'\n'+p.modulo+' ('+p.horas+'h)"> '+(p.curso?p.curso.slice(0,9):'General')+'</span>');
-  h+='<td class="'+cls+'">'+cont+'</td>';dia++;
-  }
+ if((dia===1&&c<pd)||dia>dias){h+='<td class="vacio"></td>';}
+ else{
+ const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
+ const dw=(new Date(isoD).getDay()+6)%7;
+ let cls='',cont='<div style="font-weight:bold;font-size:11px;color:#333;line-height:1.6">'+dia+'</div>';
+ if(fest[isoD]){cls='fest';cont+='<span class="pill" style="background:rgba(146,43,33,.12);color:#922b21;font-size:8px;border:1px solid rgba(146,43,33,.25)" title="'+fest[isoD]+'"> Festivo</span>';}
+ else if(dw>=5)cls='finde';
+ if(isoD===HOY)cls+=' hoy';
+ if(orgData)orgData.forEach(d=>{if(d.ss.has(isoD))cont+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1)" title="'+d.lbl+' · '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,10)+'</span>';});
+ if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>cont+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030" title=" '+(t.curso||'General')+'\n'+t.desc+' ('+t.horas+'h)"> '+(t.curso?t.curso.slice(0,9):'General')+'</span>');
+ if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>cont+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22" title=" '+(p.curso||'General')+'\n'+p.modulo+' ('+p.horas+'h)"> '+(p.curso?p.curso.slice(0,9):'General')+'</span>');
+ h+='<td class="'+cls+'">'+cont+'</td>';dia++;
+ }
  }
  h+='</tr>';if(dia>dias)break;
  }
@@ -640,21 +640,21 @@ function exportarHTML(){
  const dias=new Date(y,m,0).getDate(),pd=(new Date(y,m-1,1).getDay()+6)%7;
  let rows='';let dia=1;
  while(dia<=dias){
-  rows+='<tr>';
-  for(let c=0;c<7;c++){
-  if((dia===1&&c<pd)||dia>dias)rows+='<td></td>';
-  else{
-   const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
-   const dw=(new Date(isoD).getDay()+6)%7;
-   let cls='',pills='<b>'+dia+'</b>';
-   if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
-   _org.forEach(d=>{if(d.ss.has(isoD))pills+='<span class="p" style="background:'+d.bg+';color:'+d.fg+'">'+d.lbl.slice(0,8)+'</span>';});
-   if(tSet[isoD])tSet[isoD].forEach(t=>pills+='<span class="p" style="background:#fef9e7;color:#7d6608">'+t.horas+'h</span>');
-   if(pSet[isoD])pSet[isoD].forEach(p=>pills+='<span class="p" style="background:#f9e3c0;color:#784212">'+p.horas+'h</span>');
-   rows+='<td class="'+cls+'">'+pills+'</td>';dia++;
-  }
-  }
-  rows+='</tr>';if(dia>dias)break;
+ rows+='<tr>';
+ for(let c=0;c<7;c++){
+ if((dia===1&&c<pd)||dia>dias)rows+='<td></td>';
+ else{
+ const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
+ const dw=(new Date(isoD).getDay()+6)%7;
+ let cls='',pills='<b>'+dia+'</b>';
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
+ _org.forEach(d=>{if(d.ss.has(isoD))pills+='<span class="p" style="background:'+d.bg+';color:'+d.fg+'">'+d.lbl.slice(0,8)+'</span>';});
+ if(tSet[isoD])tSet[isoD].forEach(t=>pills+='<span class="p" style="background:#fef9e7;color:#7d6608">'+t.horas+'h</span>');
+ if(pSet[isoD])pSet[isoD].forEach(p=>pills+='<span class="p" style="background:#f9e3c0;color:#784212">'+p.horas+'h</span>');
+ rows+='<td class="'+cls+'">'+pills+'</td>';dia++;
+ }
+ }
+ rows+='</tr>';if(dia>dias)break;
  }
  mH+='<div class="mes"><div class="mh">'+MESES[m]+' '+y+'</div><table><thead><tr>'+DC.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
  curM=new Date(y,m,1);
@@ -664,7 +664,7 @@ function exportarHTML(){
  const entidad=getEntidadNombre();
  const docInfo=_org.map(d=>{const ds=[];const teoH=d.p.docTeo||d.c.docTeo,talH=d.p.docPra||d.c.docTal,segH=d.p.docSeg||d.c.docPRL;if(teoH)ds.push(' Teoría: '+teoH);if(talH)ds.push(' Taller: '+talH);if(segH)ds.push(' PRL: '+segH);return ds.length?'<tr><td style="padding:4px 8px;font-weight:bold;background:#eaf4fb;border:1px solid #aed6f1">'+d.lbl+(d.c.entidad?' <span style="font-size:8px;background:#d6eaf8;color:#1a5276;padding:1px 4px;border-radius:3px">'+d.c.entidad+'</span>':'')+'</td><td style="padding:4px 8px;border:1px solid #aed6f1">'+ds.join(' &nbsp;|&nbsp; ')+'</td></tr>':'';}).filter(Boolean).join('');
  const docTable=docInfo?'<div style="margin:8px 0"><table style="font-size:9px;border-collapse:collapse;width:auto"><thead><tr><th style="padding:3px 8px;background:#1a3a5c;color:#fff;text-align:left;border:1px solid #1a3a5c">Curso</th><th style="padding:3px 8px;background:#1a3a5c;color:#fff;text-align:left;border:1px solid #1a3a5c">Docentes</th></tr></thead><tbody>'+docInfo+'</tbody></table></div>':'';
- const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Organigrama MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A4 landscape;margin:10mm}@media print{.np{display:none}}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:9px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}header .ent{font-size:10px;background:rgba(255,255,255,.15);display:inline-block;padding:2px 8px;border-radius:3px;margin-top:3px}.meses{display:flex;flex-wrap:wrap;gap:7px}.mes{border:1px solid #ccc;border-radius:5px;overflow:hidden;min-width:182px;flex:1}.mh{background:#1a3a5c;color:#fff;text-align:center;padding:4px;font-weight:bold;font-size:10px}table{width:100%;border-collapse:collapse}th{background:#d6eaf8;color:#1a3a5c;text-align:center;padding:2px;font-size:9px}td{text-align:center;padding:2px;border:1px solid #eee;font-size:9px;vertical-align:top}td b{display:block}.p{display:block;border-radius:2px;font-size:8px;padding:1px 2px;margin:1px 0;white-space:nowrap;overflow:hidden}td.fest{background:#f5b7b1;color:#922b21}td.finde{background:#d5d8dc;color:#999}td:empty{background:#fafafa;border:none}.ley{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;font-size:10px;align-items:center}.pie{font-size:9px;color:#999;margin-top:4px}</style></head><body><header><h1>ORGANIGRAMA — MEISA Formación Los Barrios (Cádiz)</h1>'+(entidad!=='Sin especificar'?'<div class="ent"> Entidad financiadora: '+entidad+'</div>':'')+'<p>Festivos: nacionales + Andalucía + Cádiz capital | '+esES(HOY)+'</p></header>'+docTable+'<div class="meses">'+mH+'</div><div class="ley">'+lH+'</div><p class="pie">'+_org.map(d=>d.lbl+': '+esES(iso(d.ini))+' → '+esES(iso(d.fin))+' ('+d.sess.length+' días)').join(' | ')+'</p><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer">🖨 Imprimir / PDF</button></div></body></html>';
+ const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Organigrama MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A4 landscape;margin:10mm}@media print{.np{display:none}}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:9px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}header .ent{font-size:10px;background:rgba(255,255,255,.15);display:inline-block;padding:2px 8px;border-radius:3px;margin-top:3px}.meses{display:flex;flex-wrap:wrap;gap:7px}.mes{border:1px solid #ccc;border-radius:5px;overflow:hidden;min-width:182px;flex:1}.mh{background:#1a3a5c;color:#fff;text-align:center;padding:4px;font-weight:bold;font-size:10px}table{width:100%;border-collapse:collapse}th{background:#d6eaf8;color:#1a3a5c;text-align:center;padding:2px;font-size:9px}td{text-align:center;padding:2px;border:1px solid #eee;font-size:9px;vertical-align:top}td b{display:block}.p{display:block;border-radius:2px;font-size:8px;padding:1px 2px;margin:1px 0;white-space:nowrap;overflow:hidden}td.fest{background:#f5b7b1;color:#922b21}td.finde{background:#d5d8dc;color:#999}td:empty{background:#fafafa;border:none}.ley{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;font-size:10px;align-items:center}.pie{font-size:9px;color:#999;margin-top:4px}</style></head><body><header><h1>ORGANIGRAMA — MEISA Formación Los Barrios (Cádiz)</h1>'+(entidad!=='Sin especificar'?'<div class="ent"> Entidad financiadora: '+entidad+'</div>':'')+'<p>Festivos: nacionales + Andalucía + Cádiz capital | '+esES(HOY)+'</p></header>'+docTable+'<div class="meses">'+mH+'</div><div class="ley">'+lH+'</div><p class="pie">'+_org.map(d=>d.lbl+': '+esES(iso(d.ini))+' → '+esES(iso(d.fin))+' ('+d.sess.length+' días)').join(' | ')+'</p><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer"> Imprimir / PDF</button></div></body></html>';
  window.open(URL.createObjectURL(new Blob([html],{type:'text/html'})),'_blank');
 }
 function exportarExcel(){
@@ -870,20 +870,20 @@ function renderGantt(){
  const mostrarParcial=!mostrarNum&&totalDays<=180;
  let curD=new Date(iniG);
  while(curD<=finG){
-  const sd=Math.round((curD-iniG)/86400000);
-  const l=(sd/totalDays*100).toFixed(3);
-  const w=(1/totalDays*100).toFixed(3);
-  const dNum=curD.getDate();
-  const dw=curD.getDay();
-  const isWeekend=(dw===0||dw===6);
-  const fest=getFest(curD.getFullYear())[iso(curD)];
-  const showNum=mostrarNum||(mostrarParcial&&(dNum===1||dNum===5||dNum===10||dNum===15||dNum===20||dNum===25))||(!mostrarNum&&!mostrarParcial&&(dNum===1||dNum===10||dNum===20));
-  const bg=fest?'#fde8e8':isWeekend?'#e8ecf2':'#f4f7fb';
-  const col=fest?'#922b21':isWeekend?'#999':'#555';
-  const bdr=dNum===1?'border-left:1px solid #aed6f1;':'border-right:1px solid #e4eaf2;';
-  dHead+='<div title="'+esES(iso(curD))+' — '+DN[dw]+( fest?' ('+fest+')':'')+'" style="position:absolute;left:'+l+'%;width:'+w+'%;'+bdr+'background:'+bg+';text-align:center;font-size:8px;color:'+col+';overflow:hidden;box-sizing:border-box;height:100%;display:flex;align-items:center;justify-content:center;font-weight:'+(dNum===1?'bold':'normal')+'">'+
-  (showNum?String(dNum):'')+'</div>';
-  curD=addD(curD,1);
+ const sd=Math.round((curD-iniG)/86400000);
+ const l=(sd/totalDays*100).toFixed(3);
+ const w=(1/totalDays*100).toFixed(3);
+ const dNum=curD.getDate();
+ const dw=curD.getDay();
+ const isWeekend=(dw===0||dw===6);
+ const fest=getFest(curD.getFullYear())[iso(curD)];
+ const showNum=mostrarNum||(mostrarParcial&&(dNum===1||dNum===5||dNum===10||dNum===15||dNum===20||dNum===25))||(!mostrarNum&&!mostrarParcial&&(dNum===1||dNum===10||dNum===20));
+ const bg=fest?'#fde8e8':isWeekend?'#e8ecf2':'#f4f7fb';
+ const col=fest?'#922b21':isWeekend?'#999':'#555';
+ const bdr=dNum===1?'border-left:1px solid #aed6f1;':'border-right:1px solid #e4eaf2;';
+ dHead+='<div title="'+esES(iso(curD))+' — '+DN[dw]+( fest?' ('+fest+')':'')+'" style="position:absolute;left:'+l+'%;width:'+w+'%;'+bdr+'background:'+bg+';text-align:center;font-size:8px;color:'+col+';overflow:hidden;box-sizing:border-box;height:100%;display:flex;align-items:center;justify-content:center;font-weight:'+(dNum===1?'bold':'normal')+'">'+
+ (showNum?String(dNum):'')+'</div>';
+ curD=addD(curD,1);
  }
  }
  // Líneas de semanas
@@ -913,18 +913,18 @@ function renderGantt(){
  const pMarkers=dPrl.map(p=>mkMark(p.fecha,'#e67e22',' PRL — '+d.lbl+'\n '+esES(p.fecha)+'\n '+p.horas+'h\n '+p.modulo+(p.desc&&p.desc!==p.modulo?'\n '+p.desc:'')+(d.p.docSeg?'\n Docente: '+d.p.docSeg:''))).join('');
  const infoExtra=(dTeo.length?'<span style="font-size:9px;color:#7d6608;margin-right:5px"> '+dTeo.length+'</span>':'')+(dPrl.length?'<span style="font-size:9px;color:#784212"> '+dPrl.length+'</span>':'');
  return '<div style="display:flex;align-items:stretch;border-bottom:1px solid #e8eef4;min-height:46px">'+
-  '<div style="width:200px;min-width:200px;padding:6px 10px;font-size:11px;line-height:1.5;background:#f4f7fb;border-right:3px solid '+d.bg+'">'+
-  '<div style="font-weight:bold;color:var(--pri);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+d.c.nombre+'">'+d.lbl+'</div>'+
-  '<div style="color:var(--mut);font-size:10px">'+turnoLbl(d.turno)+' · '+d.sess.length+'d · '+d.c.horas_totales+'h</div>'+
-  (d.c.entidad?'<div style="margin-top:2px"><span class="badge" style="background:#d6eaf8;color:#1a5276;font-size:9px"> '+d.c.entidad+'</span></div>':'')+
-  (infoExtra?'<div>'+infoExtra+'</div>':'')+
-  '</div>'+
-  '<div style="flex:1;position:relative;background:#fafcff;overflow:hidden">'+
-  semGuia+tMarkers+pMarkers+
-  '<div title="'+labTip+'" style="position:absolute;left:'+l+'%;width:'+w+'%;top:22%;height:56%;background:'+d.bg+';border-radius:4px;display:flex;align-items:center;padding:0 8px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,.18);cursor:default;z-index:1">'+
-   '<span style="font-size:9px;font-weight:bold;color:'+d.fg+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esES(iso(d.ini))+' → '+esES(iso(d.fin))+'</span>'+
-  '</div>'+
-  '</div>'+
+ '<div style="width:200px;min-width:200px;padding:6px 10px;font-size:11px;line-height:1.5;background:#f4f7fb;border-right:3px solid '+d.bg+'">'+
+ '<div style="font-weight:bold;color:var(--pri);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+d.c.nombre+'">'+d.lbl+'</div>'+
+ '<div style="color:var(--mut);font-size:10px">'+turnoLbl(d.turno)+' · '+d.sess.length+'d · '+d.c.horas_totales+'h</div>'+
+ (d.c.entidad?'<div style="margin-top:2px"><span class="badge" style="background:#d6eaf8;color:#1a5276;font-size:9px"> '+d.c.entidad+'</span></div>':'')+
+ (infoExtra?'<div>'+infoExtra+'</div>':'')+
+ '</div>'+
+ '<div style="flex:1;position:relative;background:#fafcff;overflow:hidden">'+
+ semGuia+tMarkers+pMarkers+
+ '<div title="'+labTip+'" style="position:absolute;left:'+l+'%;width:'+w+'%;top:22%;height:56%;background:'+d.bg+';border-radius:4px;display:flex;align-items:center;padding:0 8px;overflow:hidden;box-shadow:0 2px 5px rgba(0,0,0,.18);cursor:default;z-index:1">'+
+ '<span style="font-size:9px;font-weight:bold;color:'+d.fg+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esES(iso(d.ini))+' → '+esES(iso(d.fin))+'</span>'+
+ '</div>'+
+ '</div>'+
  '</div>';
  }).join('');
  // Fila de Teóricas sin curso asignado
@@ -935,26 +935,26 @@ function renderGantt(){
  const tGm=tGen.map(t=>mkMark(t.fecha,'#c9a700',' TEÓRICA (General)\n'+esES(t.fecha)+' · '+t.horas+'h\n'+t.desc)).join('');
  const pGm=pGen.map(p=>mkMark(p.fecha,'#e67e22',' PRL (General)\n'+esES(p.fecha)+' · '+p.horas+'h\n'+p.modulo)).join('');
  rowGen='<div style="display:flex;align-items:stretch;border-bottom:1px solid #e8eef4;min-height:36px">'+
-  '<div style="width:200px;min-width:200px;padding:6px 10px;font-size:11px;background:#fffdf0;border-right:3px solid #c9a700;color:var(--mut);font-style:italic">Sin curso asignado'+(tGen.length?'<br><span style="font-size:9px;color:#7d6608"> '+tGen.length+' teóricas</span>':'')+(pGen.length?' <span style="font-size:9px;color:#784212"> '+pGen.length+' PRL</span>':'')+'</div>'+
-  '<div style="flex:1;position:relative;background:#fffdf5;overflow:hidden">'+semGuia+tGm+pGm+'</div>'+
+ '<div style="width:200px;min-width:200px;padding:6px 10px;font-size:11px;background:#fffdf0;border-right:3px solid #c9a700;color:var(--mut);font-style:italic">Sin curso asignado'+(tGen.length?'<br><span style="font-size:9px;color:#7d6608"> '+tGen.length+' teóricas</span>':'')+(pGen.length?' <span style="font-size:9px;color:#784212"> '+pGen.length+' PRL</span>':'')+'</div>'+
+ '<div style="flex:1;position:relative;background:#fffdf5;overflow:hidden">'+semGuia+tGm+pGm+'</div>'+
  '</div>';
  }
  // Pie y leyenda
  const pie='<div style="display:flex;justify-content:space-between;padding:6px 0 0 200px;font-size:10px;color:var(--mut)"><span>'+esES(iso(iniG))+'</span><span>'+esES(iso(finG))+'</span></div>';
  div.innerHTML=
  '<div style="display:flex;align-items:stretch;border-bottom:2px solid var(--pri)">'+
-  '<div style="width:200px;min-width:200px;background:var(--pri);padding:7px 10px;font-size:11px;font-weight:bold;color:#fff;display:flex;align-items:center">Curso / Turno</div>'+
-  '<div style="flex:1;display:flex;flex-direction:column;">'+
-  '<div style="position:relative;height:24px;border-bottom:1px solid #c8d8e8;">'+mHead+'</div>'+
-  '<div style="position:relative;height:20px;">'+dHead+'</div>'+
-  '</div>'+
+ '<div style="width:200px;min-width:200px;background:var(--pri);padding:7px 10px;font-size:11px;font-weight:bold;color:#fff;display:flex;align-items:center">Curso / Turno</div>'+
+ '<div style="flex:1;display:flex;flex-direction:column;">'+
+ '<div style="position:relative;height:24px;border-bottom:1px solid #c8d8e8;">'+mHead+'</div>'+
+ '<div style="position:relative;height:20px;">'+dHead+'</div>'+
+ '</div>'+
  '</div>'+
  rows+rowGen+pie+
  '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:11px;padding:12px 0 4px;border-top:1px solid #e8eef4;margin-top:8px;align-items:center">'+
-  '<strong style="color:var(--pri)">Leyenda:</strong> '+
-  _org.map(d=>'<span style="display:flex;align-items:center;gap:4px"><span style="width:13px;height:13px;border-radius:3px;background:'+d.bg+';display:inline-block;border:1px solid rgba(0,0,0,.15)"></span>'+d.lbl+'</span>').join('')+
-  '<span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:5px;height:14px;background:#c9a700;border-radius:2px"></span> Clase teórica</span>'+
-  '<span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:5px;height:14px;background:#e67e22;border-radius:2px"></span> Sesión PRL</span>'+
+ '<strong style="color:var(--pri)">Leyenda:</strong> '+
+ _org.map(d=>'<span style="display:flex;align-items:center;gap:4px"><span style="width:13px;height:13px;border-radius:3px;background:'+d.bg+';display:inline-block;border:1px solid rgba(0,0,0,.15)"></span>'+d.lbl+'</span>').join('')+
+ '<span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:5px;height:14px;background:#c9a700;border-radius:2px"></span> Clase teórica</span>'+
+ '<span style="display:flex;align-items:center;gap:4px"><span style="display:inline-block;width:5px;height:14px;background:#e67e22;border-radius:2px"></span> Sesión PRL</span>'+
  '</div>';
 }
 function exportarGanttHTML(){
@@ -966,7 +966,7 @@ function exportarGanttHTML(){
  const endM2=new Date(finG.getFullYear(),finG.getMonth(),1);
  while(curM2<=endM2){const y2=curM2.getFullYear(),m2=curM2.getMonth();const ms=new Date(y2,m2,1),me=new Date(y2,m2+1,0);const sd=Math.max(0,Math.round((ms-iniG)/86400000));const ed=Math.min(totalDays-1,Math.round((me-iniG)/86400000));const w=((ed-sd+1)/totalDays*100).toFixed(2),l=(sd/totalDays*100).toFixed(2);mHead+='<div style="position:absolute;left:'+l+'%;width:'+w+'%;text-align:center;font-size:10px;font-weight:bold;background:#d6eaf8;color:#1a3a5c;padding:4px 2px;border-right:1px solid #aed6f1;overflow:hidden;white-space:nowrap;box-sizing:border-box">'+MESES[m2+1]+' '+y2+'</div>';curM2=new Date(y2,m2+1,1);}
  const rows2=_org.map(d=>{const sd=Math.round((new Date(d.ini)-iniG)/86400000);const ed=Math.round((new Date(d.fin)-iniG)/86400000);const l=(sd/totalDays*100).toFixed(2),w=((ed-sd+1)/totalDays*100).toFixed(2);return '<tr><td style="width:180px;padding:6px 10px;font-size:10px;background:#f4f7fb;border-right:3px solid '+d.bg+';border-bottom:1px solid #eee;white-space:nowrap"><strong>'+d.lbl+'</strong><br><span style="color:#888;font-size:9px">'+turnoLbl(d.turno)+' · '+d.sess.length+'d · '+d.c.horas_totales+'h</span></td><td style="padding:0;border-bottom:1px solid #eee;position:relative;height:38px;background:#fafcff"><div style="position:absolute;left:'+l+'%;width:'+w+'%;top:18%;height:64%;background:'+d.bg+';border-radius:4px;display:flex;align-items:center;padding:0 6px;overflow:hidden"><span style="font-size:8px;font-weight:bold;color:'+d.fg+';white-space:nowrap">'+esES(iso(d.ini))+' → '+esES(iso(d.fin))+'</span></div></td></tr>';}).join('');
- const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Gantt MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A3 landscape;margin:10mm}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:10px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}table{width:100%;border-collapse:collapse}.mhead{width:100%;position:relative;height:34px;border-bottom:2px solid #1a3a5c}.np{display:none}@media print{.np{display:none}}</style></head><body><header><h1>DIAGRAMA DE GANTT — MEISA Formación Los Barrios (Cádiz)</h1><p>'+esES(HOY)+' · '+esES(iso(iniG))+' → '+esES(iso(finG))+'</p></header><table><thead><tr><th style="width:180px;background:#1a3a5c;color:#fff;padding:7px 10px;text-align:left;font-size:11px">Curso / Turno</th><th style="padding:0"><div class="mhead">'+mHead+'</div></th></tr></thead><tbody>'+rows2+'</tbody></table><div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;font-size:10px">'+_org.map(d=>'<span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+d.bg+';vertical-align:middle;margin-right:3px"></span>'+d.lbl+'</span>').join('')+'</div><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer">🖨 Imprimir / PDF</button></div></body></html>';
+ const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Gantt MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A3 landscape;margin:10mm}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:10px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}table{width:100%;border-collapse:collapse}.mhead{width:100%;position:relative;height:34px;border-bottom:2px solid #1a3a5c}.np{display:none}@media print{.np{display:none}}</style></head><body><header><h1>DIAGRAMA DE GANTT — MEISA Formación Los Barrios (Cádiz)</h1><p>'+esES(HOY)+' · '+esES(iso(iniG))+' → '+esES(iso(finG))+'</p></header><table><thead><tr><th style="width:180px;background:#1a3a5c;color:#fff;padding:7px 10px;text-align:left;font-size:11px">Curso / Turno</th><th style="padding:0"><div class="mhead">'+mHead+'</div></th></tr></thead><tbody>'+rows2+'</tbody></table><div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;font-size:10px">'+_org.map(d=>'<span><span style="display:inline-block;width:12px;height:12px;border-radius:2px;background:'+d.bg+';vertical-align:middle;margin-right:3px"></span>'+d.lbl+'</span>').join('')+'</div><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer"> Imprimir / PDF</button></div></body></html>';
  window.open(URL.createObjectURL(new Blob([html],{type:'text/html'})),'_blank');
 }
 function cambiarEntidad(){
@@ -1049,10 +1049,10 @@ function renderAsignaciones(){
  const total=prTeo.length+prTal.length+prPRL.length;
  if(!total)return'<div style="padding:6px 0;border-bottom:1px solid #eaeff5"><strong>'+d.nombre+'</strong> — <span style="color:var(--mut)">Sin asignaciones activas</span></div>';
  return'<div style="padding:6px 0;border-bottom:1px solid #eaeff5"><strong>'+d.nombre+'</strong> <span class="badge" style="background:var(--pri);color:#fff;font-size:9px">'+ESPEC_LABELS[d.espec]+'</span><br>'
-  +(prTeo.length?'<span style="font-size:10px;color:#1a5276"> Teoría: '+prTeo.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span><br>':'')
-  +(prTal.length?'<span style="font-size:10px;color:#784212"> Taller: '+prTal.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span><br>':'')
-  +(prPRL.length?'<span style="font-size:10px;color:#922b21"> PRL: '+prPRL.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span>':'')
-  +'</div>';
+ +(prTeo.length?'<span style="font-size:10px;color:#1a5276"> Teoría: '+prTeo.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span><br>':'')
+ +(prTal.length?'<span style="font-size:10px;color:#784212"> Taller: '+prTal.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span><br>':'')
+ +(prPRL.length?'<span style="font-size:10px;color:#922b21"> PRL: '+prPRL.map(p=>cu[p.idx]?.codigo||'?').join(', ')+'</span>':'')
+ +'</div>';
  }).join('');
 }
 function guardarDocente(){
