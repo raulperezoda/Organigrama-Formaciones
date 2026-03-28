@@ -581,23 +581,39 @@ function buildMes(y,m,orgData,tSet,prlSet){
  if(!FC[y])FC[y]=festivos(y,getEx());
  const fest=FC[y],dias=new Date(y,m,0).getDate(),pd=(new Date(y,m-1,1).getDay()+6)%7;
  const wrap=document.createElement('div');wrap.className='mes';
- let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr>'+DC.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>';
+ let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px;background:var(--blue);color:var(--pri)">Dia</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Manna</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Tarde</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Teorica / PRL</th></tr></thead><tbody>';
  let dia=1;
  while(dia<=dias){
  h+='<tr>';
- for(let c=0;c<7;c++){
- if((dia===1&&c<pd)||dia>dias){h+='<td class="vacio"></td>';}
- else{
+ for(let c=0;c<4;c++){
+ if(c===0&&((dia===1&&pd>0)||dia>dias)){h+='<td class="vacio" style="width:35px"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td>';if(c===0){dia++;}continue;}
+ if(c>0&&((dia===1&&pd>0)||dia>dias)){h+='<td class="vacio"></td>';if(c===3&&dia<=dias)dia++;continue;}
  const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
  const dw=(new Date(isoD).getDay()+6)%7;
- let cls='',cont='<div style="font-weight:bold;font-size:11px;color:#333;line-height:1.6">'+dia+'</div>';
- if(fest[isoD]){cls='fest';cont+='<span class="pill" style="background:rgba(146,43,33,.12);color:#922b21;font-size:8px;border:1px solid rgba(146,43,33,.25)" title="'+fest[isoD]+'"> Festivo</span>';}
- else if(dw>=5)cls='finde';
+ let cls='';
+ if(c===0){
+ if(dw>=5)cls='finde';
+ if(fest[isoD])cls='fest';
+ h+='<td class="'+cls+'" style="font-weight:bold;font-size:12px;text-align:center;padding:4px'+(isoD===HOY?';background:#fffbf2':'')+'">'+dia+'</td>';
+ }else if(c===1){
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
  if(isoD===HOY)cls+=' hoy';
- if(orgData)orgData.forEach(d=>{if(d.ss.has(isoD))cont+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1)" title="'+d.lbl+' · '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,10)+'</span>';});
- if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>cont+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030" title=" '+(t.curso||'General')+'\n'+t.desc+' ('+t.horas+'h)"> '+(t.curso?t.curso.slice(0,9):'General')+'</span>');
- if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>cont+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22" title=" '+(p.curso||'General')+'\n'+p.modulo+' ('+p.horas+'h)"> '+(p.curso?p.curso.slice(0,9):'General')+'</span>');
- h+='<td class="'+cls+'">'+cont+'</td>';dia++;
+ let mannaPills='';
+ if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('m')).forEach(d=>{mannaPills+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+mannaPills+'</td>';
+ }else if(c===2){
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
+ if(isoD===HOY)cls+=' hoy';
+ let tardePills='';
+ if(orgData)orgData.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('t')).forEach(d=>{tardePills+='<span class="pill" style="background:'+d.bg+';color:'+d.fg+';border:1px solid rgba(0,0,0,.1);display:block;margin:1px 0;font-size:9px" title="'+d.lbl+' - '+turnoLbl(d.turno)+'">'+d.lbl.slice(0,12)+'</span>';});
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+tardePills+'</td>';
+ }else if(c===3){
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
+ if(isoD===HOY)cls+=' hoy';
+ let exPills='';
+ if(tSet&&tSet[isoD])tSet[isoD].forEach(t=>exPills+='<span class="pill" style="background:#fef9e7;color:#7d6608;border:1px solid #f0c030;display:block;margin:1px 0;font-size:9px" title="'+(t.curso||'General')+' - '+t.desc+' ('+t.horas+'h)">T '+t.horas+'h'+(t.curso?' '+t.curso.slice(0,8):'')+'</span>');
+ if(prlSet&&prlSet[isoD])prlSet[isoD].forEach(p=>exPills+='<span class="pill" style="background:#f9e3c0;color:#784212;border:1px solid #e67e22;display:block;margin:1px 0;font-size:9px" title="'+(p.curso||'General')+' - '+p.modulo+' ('+p.horas+'h)">P '+p.horas+'h'+(p.curso?' '+p.curso.slice(0,8):'')+'</span>');
+ h+='<td class="'+cls+'" style="padding:2px;vertical-align:top;min-width:60px'+(isoD===HOY?';background:#fffbf2':'')+'">'+exPills+'</td>';
  }
  }
  h+='</tr>';if(dia>dias)break;
@@ -641,22 +657,35 @@ function exportarHTML(){
  let rows='';let dia=1;
  while(dia<=dias){
  rows+='<tr>';
- for(let c=0;c<7;c++){
- if((dia===1&&c<pd)||dia>dias)rows+='<td></td>';
- else{
+ for(let c=0;c<4;c++){
+ if(c===0&&((dia===1&&pd>0)||dia>dias)){rows+='<td class="vacio"></td><td class="vacio"></td><td class="vacio"></td><td class="vacio"></td>';if(c===0)dia++;continue;}
+ if(c>0&&((dia===1&&pd>0)||dia>dias)){rows+='<td class="vacio"></td>';if(c===3&&dia<=dias)dia++;continue;}
  const isoD=y+'-'+String(m).padStart(2,'0')+'-'+String(dia).padStart(2,'0');
  const dw=(new Date(isoD).getDay()+6)%7;
- let cls='',pills='<b>'+dia+'</b>';
+ let cls='';
+ if(c===0){
+ if(dw>=5)cls='finde';
+ if(fest[isoD])cls='fest';
+ rows+='<td class="'+cls+'" style="font-weight:bold;padding:4px;text-align:center">'+dia+'</td>';
+ }else if(c===1){
  if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
- _org.forEach(d=>{if(d.ss.has(isoD))pills+='<span class="p" style="background:'+d.bg+';color:'+d.fg+'">'+d.lbl.slice(0,8)+'</span>';});
- if(tSet[isoD])tSet[isoD].forEach(t=>pills+='<span class="p" style="background:#fef9e7;color:#7d6608">'+t.horas+'h</span>');
- if(pSet[isoD])pSet[isoD].forEach(p=>pills+='<span class="p" style="background:#f9e3c0;color:#784212">'+p.horas+'h</span>');
- rows+='<td class="'+cls+'">'+pills+'</td>';dia++;
+ let mp='';_org.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('m')).forEach(d=>{mp+='<span class="p" style="background:'+d.bg+';color:'+d.fg+'">'+d.lbl.slice(0,10)+'</span>';});
+ rows+='<td class="'+cls+'" style="padding:2px;vertical-align:top">'+mp+'</td>';
+ }else if(c===2){
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
+ let tp='';_org.filter(d=>d.ss.has(isoD)&&d.turno.startsWith('t')).forEach(d=>{tp+='<span class="p" style="background:'+d.bg+';color:'+d.fg+'">'+d.lbl.slice(0,10)+'</span>';});
+ rows+='<td class="'+cls+'" style="padding:2px;vertical-align:top">'+tp+'</td>';
+ }else if(c===3){
+ if(fest[isoD])cls='fest';else if(dw>=5)cls='finde';
+ let ep='';
+ if(tSet[isoD])tSet[isoD].forEach(t=>ep+='<span class="p" style="background:#fef9e7;color:#7d6608">T:'+t.horas+'h</span>');
+ if(pSet[isoD])pSet[isoD].forEach(p=>ep+='<span class="p" style="background:#f9e3c0;color:#784212">P:'+p.horas+'h</span>');
+ rows+='<td class="'+cls+'" style="padding:2px;vertical-align:top">'+ep+'</td>';
  }
  }
  rows+='</tr>';if(dia>dias)break;
  }
- mH+='<div class="mes"><div class="mh">'+MESES[m]+' '+y+'</div><table><thead><tr>'+DC.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>'+rows+'</tbody></table></div>';
+ mH+='<div class="mes"><div class="mh">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px">Dia</th><th style="padding:3px;font-size:9px">Manhana</th><th style="padding:3px;font-size:9px">Tarde</th><th style="padding:3px;font-size:9px">Teorica/PRL</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
  curM=new Date(y,m,1);
  }
  const lH=_org.map(d=>'<span><b style="background:'+d.bg+';color:'+d.fg+';padding:1px 5px;border-radius:3px">'+d.lbl+'</b> '+turnoLbl(d.turno)+'</span>').join('')+
@@ -664,7 +693,7 @@ function exportarHTML(){
  const entidad=getEntidadNombre();
  const docInfo=_org.map(d=>{const ds=[];const teoH=d.p.docTeo||d.c.docTeo,talH=d.p.docPra||d.c.docTal,segH=d.p.docSeg||d.c.docPRL;if(teoH)ds.push(' Teoría: '+teoH);if(talH)ds.push(' Taller: '+talH);if(segH)ds.push(' PRL: '+segH);return ds.length?'<tr><td style="padding:4px 8px;font-weight:bold;background:#eaf4fb;border:1px solid #aed6f1">'+d.lbl+(d.c.entidad?' <span style="font-size:8px;background:#d6eaf8;color:#1a5276;padding:1px 4px;border-radius:3px">'+d.c.entidad+'</span>':'')+'</td><td style="padding:4px 8px;border:1px solid #aed6f1">'+ds.join(' &nbsp;|&nbsp; ')+'</td></tr>':'';}).filter(Boolean).join('');
  const docTable=docInfo?'<div style="margin:8px 0"><table style="font-size:9px;border-collapse:collapse;width:auto"><thead><tr><th style="padding:3px 8px;background:#1a3a5c;color:#fff;text-align:left;border:1px solid #1a3a5c">Curso</th><th style="padding:3px 8px;background:#1a3a5c;color:#fff;text-align:left;border:1px solid #1a3a5c">Docentes</th></tr></thead><tbody>'+docInfo+'</tbody></table></div>':'';
- const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Organigrama MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A4 landscape;margin:10mm}@media print{.np{display:none}}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:9px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}header .ent{font-size:10px;background:rgba(255,255,255,.15);display:inline-block;padding:2px 8px;border-radius:3px;margin-top:3px}.meses{display:flex;flex-wrap:wrap;gap:7px}.mes{border:1px solid #ccc;border-radius:5px;overflow:hidden;min-width:182px;flex:1}.mh{background:#1a3a5c;color:#fff;text-align:center;padding:4px;font-weight:bold;font-size:10px}table{width:100%;border-collapse:collapse}th{background:#d6eaf8;color:#1a3a5c;text-align:center;padding:2px;font-size:9px}td{text-align:center;padding:2px;border:1px solid #eee;font-size:9px;vertical-align:top}td b{display:block}.p{display:block;border-radius:2px;font-size:8px;padding:1px 2px;margin:1px 0;white-space:nowrap;overflow:hidden}td.fest{background:#f5b7b1;color:#922b21}td.finde{background:#d5d8dc;color:#999}td:empty{background:#fafafa;border:none}.ley{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;font-size:10px;align-items:center}.pie{font-size:9px;color:#999;margin-top:4px}</style></head><body><header><h1>ORGANIGRAMA — MEISA Formación Los Barrios (Cádiz)</h1>'+(entidad!=='Sin especificar'?'<div class="ent"> Entidad financiadora: '+entidad+'</div>':'')+'<p>Festivos: nacionales + Andalucía + Cádiz capital | '+esES(HOY)+'</p></header>'+docTable+'<div class="meses">'+mH+'</div><div class="ley">'+lH+'</div><p class="pie">'+_org.map(d=>d.lbl+': '+esES(iso(d.ini))+' → '+esES(iso(d.fin))+' ('+d.sess.length+' días)').join(' | ')+'</p><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer"> Imprimir / PDF</button></div></body></html>';
+  const html='<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Organigrama MEISA</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;font-size:11px}@page{size:A3 landscape;margin:10mm}@media print{.np{display:none}}header{background:#1a3a5c;color:#fff;padding:10px 15px;margin-bottom:9px}header h1{font-size:13px}header p{font-size:9px;opacity:.75}header .ent{font-size:10px;background:rgba(255,255,255,.15);display:inline-block;padding:2px 8px;border-radius:3px;margin-top:3px}.meses{display:flex;flex-wrap:wrap;gap:10px}.mes{border:1px solid #ccc;border-radius:5px;overflow:hidden;min-width:320px;flex:1}.mh{background:#1a3a5c;color:#fff;text-align:center;padding:4px;font-weight:bold;font-size:10px}table{width:100%;border-collapse:collapse}th{background:#d6eaf8;color:#1a3a5c;text-align:center;padding:3px;font-size:9px}td{text-align:center;padding:2px;border:1px solid #eee;font-size:9px;vertical-align:top;min-width:50px}td b{display:block}.p{display:block;border-radius:2px;font-size:7px;padding:1px 2px;margin:1px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}td.fest{background:#f5b7b1;color:#922b21}td.finde{background:#d5d8dc;color:#999}td.vacio{background:#fafafa;border:none}.ley{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;font-size:10px;align-items:center}.pie{font-size:9px;color:#999;margin-top:4px}</style></head><body><header><h1>ORGANIGRAMA - MEISA Formacion Los Barrios (Cadiz)</h1>'+(entidad!=='Sin especificar'?'<div class="ent"> Entidad financiadora: '+entidad+'</div>':'')+'<p>Festivos: nacionales + Andalucia + Cadiz capital | '+esES(HOY)+'</p></header>'+docTable+'<div class="meses">'+mH+'</div><div class="ley">'+lH+'</div><p class="pie">'+_org.map(d=>d.lbl+': '+esES(iso(d.ini))+' -> '+esES(iso(d.fin))+' ('+d.sess.length+' dias)').join(' | ')+'</p><div class="np" style="margin-top:10px"><button onclick="window.print()" style="padding:7px 16px;background:#1a3a5c;color:#fff;border:none;border-radius:5px;cursor:pointer"> Imprimir / PDF</button></div></body></html>';
  window.open(URL.createObjectURL(new Blob([html],{type:'text/html'})),'_blank');
 }
 function exportarExcel(){
