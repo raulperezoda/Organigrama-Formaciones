@@ -303,7 +303,7 @@ function buildMes(y,m,orgData,tSet,prlSet){
  if(!FC[y])FC[y]=festivos(y,getEx());
  const fest=FC[y],dias=new Date(y,m,0).getDate(),pd=(new Date(y,m-1,1).getDay()+6)%7;
  const wrap=document.createElement('div');wrap.className='mes';
- let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px;background:var(--blue);color:var(--pri)">Dia</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Manhana</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Tarde</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Teorica / PRL</th></tr></thead><tbody>';
+ let h='<div class="mes-titulo">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px;background:var(--blue);color:var(--pri)">Dia</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Mañana</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Tarde</th><th style="background:var(--blue);color:var(--pri);padding:3px 4px;font-size:10px">Teorica / PRL</th></tr></thead><tbody>';
  let dia=1;
  while(dia<=dias){
  h+='<tr>';
@@ -414,7 +414,7 @@ function exportarHTML(){
  }
  rows+='</tr>';if(dia>dias)break;
  }
- mH+='<div class="mes"><div class="mh">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px">Dia</th><th style="padding:3px;font-size:9px">Manhana</th><th style="padding:3px;font-size:9px">Tarde</th><th style="padding:3px;font-size:9px">Teorica/PRL</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+ mH+='<div class="mes"><div class="mh">'+MESES[m]+' '+y+'</div><table><thead><tr><th style="padding:3px;font-size:9px">Dia</th><th style="padding:3px;font-size:9px">Mañana</th><th style="padding:3px;font-size:9px">Tarde</th><th style="padding:3px;font-size:9px">Teorica/PRL</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
  curM=new Date(y,m,1);
  }
  const lH=_org.map(d=>'<span><b style="background:'+d.bg+';color:'+d.fg+';padding:1px 5px;border-radius:3px">'+d.lbl+'</b> '+turnoLbl(d.turno)+'</span>').join('')+
