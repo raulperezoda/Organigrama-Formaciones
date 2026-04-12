@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selección de Alumnos MEISA</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div id="app" class="max-w-7xl mx-auto p-4"></div>
+<script>
+const NOMBRES_FEMENINOS = new Set([
+  'maria','rosa','isabel','carmen','julia','ana','laura','silvia','sara',
+  'elena','marta','paula','natalia','clara','irene','alicia','beatriz','lucia',
+  'sofia','cristina','patricia','veronica','monica','eva','andrea','raquel','susana',
+  'nuria','noelia','miriam','lorena','alba','ines','aitana','esther','vanessa',
+  'gloria','angela','marian','montse','montserrat','mercedes','margarita','rosario',
+  'luisa','pilar','teresa','marisol','aurora','lolita','lola','magdalena','amanda',
+  'gemma','nicole','mireia','naomi','judit','catalina','cecilia','florencia','emilia',
+  'marina','adriana','diana','karina','gabriela','valeria','emily','karol','stephanie',
+  'belen','gema','vanesa','estela','mayte','maite','rosana','rocio','alejandra',
+  'alexandra','carla','carolina','camila','candela','carme','carola','claudia',
+  'dafne','dalila','eliana','elena','lorena','nuria','nicole','triana','alexandra',
+  'sandra','sandy','sara','selena','shannon','sharon','sheila','sierra','silvia',
+  'sonia','sonja','sophie','stacy','stella','stephanie','susan','susana','talia',
+  'tamara','tania','tanya','tara','teresa','tiana','tiffany','tina','toni','tracy',
+  'ursula','valentina','valeria','valerie','vanessa','vera','veronica','victoria',
+  'violeta','virginia','vivian','viviana','wendy','wilma','zara','zoe','abigail',
+  'adele','alejandra','alessandra','alexia','amber','amelia','amy','anabel','anastasia',
+  'angel','angela','angelina','anita','ann','anna','anne','ariadna','ashley','audrey',
+  'ava','bailey','barbara','bea','beatrice','becky','bella','bethany','bianca','blanca',
+  'bonnie','brandi','brandy','bridget','brittany','brooke','brooklyn','caitlin','camilla',
+  'camille','carina','carol','caroline','carolyn','carrie','cassandra','charlotte',
+  'chelsea','cheryl','chloe','christina','christine','cindy','clare','claudia','courtney',
+  'daisy','dana','daniela','daphne','dawn','debbie','debra','denise','diana','diane',
+  'donna','doris','edith','eileen','elaine','elisa','elisabeth','emma','erica','erika',
+  'erin','esme','faith','felicia','felicity','fernanda','flor','flora','francine','gabriela',
+  'gabriella','gail','georgia','gillian','gina','gladys','gloria','grace','greta','hailey',
+  'hannah','hazel','heather','helen','holly','isabel','isabella','jackie','jacqueline',
+  'jade','jamie','jane','janet','janice','jasmine','jean','jeanne','jennifer','jessie',
+  'jill','jillian','joanna','joanne','jocelyn','jodi','jodie','jody','joyce','judith','julie',
+  'karen','kari','karin','karina','karla','kate','katharine','katherine','kathie','kathleen',
+  'kathryn','kathy','kati','katie','kay','kayla','kaylee','kelly','kelsey','kendall',
+  'keri','kerri','kerry','kim','kimberley','kimberly','kira','kirsten','kristen','kristin',
+  'kristina','kristine','kristy','kylie','lacey','laila','lana','lara','latoya','laurie',
+  'leah','leigh','leila','lesley','leslie','lilian','linda','lindsay','lindy','liz','liza',
+  'lola','lora','lori','lorie','lorraine','lucille','lucy','mabel','mackenzie','madison',
+  'magdalena','maggie','mandy','marcella','marcia','margaret','margie','mariana','marie',
+  'marilyn','marisa','marissa','marta','martina','mary','maureen','megan','meghan','melanie',
+  'melba','melinda','melissa','melody','meredith','merry','meryl','mia','michael','michelle',
+  'miley','molly','monica','nancy','naomi','natalie','natasha','nathalie','nicole','nina',
+  'noel','noelia','noemi','nora','norma','olga','olivia','paige','pam','pamela','patricia',
+  'patsy','patty','paula','penelope','penny','petra','phyllis','priscilla','rachel','ramona',
+  'rebecca','reina','renata','renee','rhonda','rita','robbie','roberta','robin','robyn',
+  'rochelle','rosa','rosalie','rosalyn','rosanna','rosario','sabina','sabrina','samantha',
+  'sandra','sandy','sara','scarlet','scarlett','serena','shanna','shannon','sharon','sheila',
+  'shelia','shelley','shelly','sheri','sherri','sherry','shirley','sierra','sindy','sonia',
+  'stacey','stacie','stacy','stefani','stefanie','stephani','stephanie','summer','susan',
+  'susana','susie','suzanne','suzy','sybil','sydney','tami','tamika','tammi','tammie','tammy',
+  'tania','tanisha','tanya','tara','tasha','tatiana','teri','terri','terry','theresa','tierra',
+  'tiffani','tiffanie','tiffany','tina','toni','tonia','tonya','tracey','traci','tracie',
+  'tracy','tricia','trish','trista','trudy','tyra','una','ursula','valencia','valentina',
+  'valeria','valerie','vanessa','velma','vera','verna','vicki','vickie','vicky','violet',
+  'virginia','vivian','viviana','wendy','whitney','winnie','ximena','yasmin','yolanda',
+  'yvonne','zara','zelda','zula'
+]);
+
+function esNombreFemenino(nombre) {
+  if (!nombre) return false;
+  const primero = nombre.trim().toLowerCase().split(' ')[0];
+  return NOMBRES_FEMENINOS.has(primero);
+}
+
+const MODALIDADES = ['soldador', 'tubero', 'montador', 'todos'];
+const MODALIDADES_COLORES = {
+  'soldador': '#f59e0b',
+  'tubero': '#3b82f6',
+  'montador': '#10b981',
+  'todos': '#6366f1'
+};
+
+let state = {
+  alumnos: [],
+  seleccionados: [],
+  reservas: [],
+  modalidadSeleccionada: 'todos',
+  numPrincipales: 15,
+  numReservas: 5,
+  pestana: 'seleccion',
+  busqueda: '',
+  paginaActual: 1,
+  mostrarFiltros: false
+};
+const porPagina = 50;
+
+function detectarFilaCabeceras(json) {
+  for (let i = 0; i < Math.min(5, json.length); i++) {
+    const row = json[i];
+    if (!row) continue;
+    const nombreCelda = String(row[1] || '').toLowerCase().trim();
+    if (nombreCelda === 'nombre') return i;
+  }
+  return 1;
+}
+
+function getModalidades(row) {
+  if (!Array.isArray(row)) return [];
+  const mods = [];
+  for (let col = 10; col <= 12; col++) {
+    const val = String(row[col] || '').toLowerCase().trim();
+    if (val.includes('soldador') && !mods.includes('soldador')) mods.push('soldador');
+    if ((val.includes('tubero') || val.includes('tuberia')) && !mods.includes('tubero')) mods.push('tubero');
+    if (val.includes('montador') && !mods.includes('montador')) mods.push('montador');
+  }
+  return mods;
+}
+
+function leerExcel(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    try {
+      const data = new Uint8Array(event.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      
+      // Encontrar la hoja con más filas de datos (no cabeceras)
+      let mejorHoja = 0;
+      let maxDatos = 0;
+      
+      console.log('Hojas en el Excel:', workbook.SheetNames);
+      
+      for (let h = 0; h < workbook.SheetNames.length; h++) {
+        const sheet = workbook.Sheets[workbook.SheetNames[h]];
+        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        // Contar filas con datos (con nombre)
+        let filasConDatos = 0;
+        for (let i = 1; i < json.length; i++) {
+          if (json[i] && json[i].length > 0 && json[i][1]) filasConDatos++;
+        }
+        console.log('Hoja', h, '-', workbook.SheetNames[h], ':', json.length, 'filas total,', filasConDatos, 'con datos');
+        if (filasConDatos > maxDatos) {
+          maxDatos = filasConDatos;
+          mejorHoja = h;
+        }
+      }
+      
+      console.log('Usando hoja:', mejorHoja, workbook.SheetNames[mejorHoja]);
+      
+      // Procesar la mejor hoja
+      const sheet = workbook.Sheets[workbook.SheetNames[mejorHoja]];
+      const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      
+      if (json.length < 2) {
+        alert('Archivo vacío');
+        return;
+      }
+      
+      const filaCabeceras = detectarFilaCabeceras(json);
+      const headers = json[filaCabeceras].map(String);
+      
+      const nuevosAlumnos = [];
+      let saltados = 0;
+      
+      for (let i = filaCabeceras + 1; i < json.length; i++) {
+        const row = json[i];
+        if (!row || row.length === 0) { saltados++; continue; }
+        
+        const nombre = String(row[1] || '').trim();
+        if (!nombre) { saltados++; continue; }
+        
+        let edad;
+        const edadVal = parseInt(row[9]);
+        if (!isNaN(edadVal)) edad = edadVal;
+        
+        const estudios = String(row[13] || '').trim();
+        const modalidades = getModalidades(row);
+        
+        nuevosAlumnos.push({
+          id: 'alum-' + i,
+          nombre,
+          edad,
+          estudios,
+          experiencias: '',
+          modalidades: modalidades,
+          modalidad: modalidades[0] || '',
+          curso: modalidades.join(', '),
+          seleccionado: false,
+          esReserva: false,
+          esEvitable: false
+        });
+      }
+      
+      state.alumnos = nuevosAlumnos;
+      state.seleccionados = [];
+      state.reservas = [];
+      state.paginaActual = 1;
+      
+      const soldador = nuevosAlumnos.filter(a => a.modalidades && a.modalidades.includes('soldador')).length;
+      const tubero = nuevosAlumnos.filter(a => a.modalidades && a.modalidades.includes('tubero')).length;
+      const montador = nuevosAlumnos.filter(a => a.modalidades && a.modalidades.includes('montador')).length;
+      
+      alert('Hoja seleccionada: ' + workbook.SheetNames[mejorHoja] + '\n\nTotal: ' + nuevosAlumnos.length + ' alumnos\nMontador: ' + montador + '\nTubero: ' + tubero + '\nSoldador: ' + soldador);
+      render();
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Error al leer Excel: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function getAlumnosFiltrados() {
+  let result = [...state.alumnos];
+  
+  if (state.busqueda) {
+    const lower = state.busqueda.toLowerCase();
+    result = result.filter(a => 
+      a.nombre.toLowerCase().includes(lower) ||
+      (a.estudios && a.estudios.toLowerCase().includes(lower))
+    );
+  }
+  
+  if (state.modalidadSeleccionada !== 'todos') {
+    const filtro = state.modalidadSeleccionada;
+    result = result.filter(a => a.modalidades && a.modalidades.includes(filtro));
+  }
+  
+  return result;
+}
+
+function seleccionarAleatorio() {
+  const disponibles = getAlumnosFiltrados().filter(a => !a.seleccionado && !a.esEvitable);
+  
+  if (disponibles.length === 0) {
+    alert('No hay candidatos disponibles');
+    return;
+  }
+  
+  const shuffled = [...disponibles].sort(() => Math.random() - 0.5);
+  
+  // Asegurar que seleccionamos exactamente numPrincipales
+  const principales = shuffled.slice(0, state.numPrincipales).map(a => ({ ...a, seleccionado: true }));
+  
+  const noSeleccionados = disponibles.filter(a => !principales.find(p => p.id === a.id));
+  const shuffledReservas = [...noSeleccionados].sort(() => Math.random() - 0.5);
+  const reservasArr = shuffledReservas.slice(0, state.numReservas).map(a => ({ ...a, esReserva: true }));
+  
+  state.seleccionados = principales;
+  state.reservas = reservasArr;
+  state.alumnos = state.alumnos.map(a => {
+    const isPrincipal = principales.find(p => p.id === a.id);
+    const isReserva = reservasArr.find(r => r.id === a.id);
+    if (isPrincipal) return { ...a, seleccionado: true, esReserva: false };
+    if (isReserva) return { ...a, seleccionado: false, esReserva: true };
+    return { ...a, seleccionado: false, esReserva: false };
+  });
+  
+  console.log('Seleccionados:', principales.length, 'Reservas:', reservasArr.length);
+  render();
+}
+
+function ascendeReserva(reserva) {
+  const nuevosSeleccionados = [...state.seleccionados];
+  const ultimo = nuevosSeleccionados.pop();
+  if (ultimo) {
+    state.reservas = [...state.reservas, { ...ultimo, seleccionado: false, esReserva: true }];
+  }
+  nuevosSeleccionados.push({ ...reserva, seleccionado: true, esReserva: false });
+  state.seleccionados = nuevosSeleccionados;
+  state.reservas = state.reservas.filter(r => r.id !== reserva.id);
+  render();
+}
+
+function toggleEvitable(alumnoId) {
+  state.alumnos = state.alumnos.map(a => a.id === alumnoid ? { ...a, esEvitable: !a.esEvitable } : a);
+  render();
+}
+
+function eliminarAlumno(alumnoId) {
+  state.alumnos = state.alumnos.filter(a => a.id !== alumnoid);
+  state.seleccionados = state.seleccionados.filter(a => a.id !== alumnoid);
+  state.reservas = state.reservas.filter(a => a.id !== alumnoid);
+  render();
+}
+
+function actualizarCampo(alumnoId, campo, valor) {
+  const actualizar = lista => lista.map(a => a.id === alumnoid ? { ...a, [campo]: valor } : a);
+  state.alumnos = actualizar(state.alumnos);
+  state.seleccionados = actualizar(state.seleccionados);
+  state.reservas = actualizar(state.reservas);
+  render();
+}
+
+function asignarCurso() {
+  const nombreMostrar = state.modalidadSeleccionada.charAt(0).toUpperCase() + state.modalidadSeleccionada.slice(1);
+  const actualizar = lista => lista.map(a => ({ ...a, curso: nombreMostrar }));
+  state.alumnos = actualizar(state.alumnos);
+  state.seleccionados = actualizar(state.seleccionados);
+  state.reservas = actualizar(state.reservas);
+  render();
+}
+
+function copiarNombres() {
+  let texto = 'ALUMNOS SELECCIONADOS:\n';
+  state.seleccionados.forEach((a, i) => {
+    const indicadores = [];
+    if (esNombreFemenino(a.nombre)) indicadores.push('M');
+    if (a.edad) indicadores.push(a.edad + ' años');
+    if (a.curso) indicadores.push(a.curso);
+    texto += (i + 1) + '. ' + a.nombre + (indicadores.length ? ' (' + indicadores.join(', ') + ')' : '') + '\n';
+  });
+  if (state.reservas.length > 0) {
+    texto += '\nRESERVAS:\n';
+    state.reservas.forEach((a, i) => {
+      const indicadores = [];
+      if (esNombreFemenino(a.nombre)) indicadores.push('M');
+      if (a.edad) indicadores.push(a.edad + ' años');
+      texto += (i + 1) + '. ' + a.nombre + (indicadores.length ? ' (' + indicadores.join(', ') + ')' : '') + '\n';
+    });
+  }
+  navigator.clipboard.writeText(texto);
+}
+
+function exportarCSV() {
+  let csv = 'Tipo,N°,Nombre,Edad,Estudios,Modalidad,Curso\n';
+  state.seleccionados.forEach((a, i) => {
+    csv += `Alumno,${i + 1},"${a.nombre}",${a.edad || ''},"${a.estudios || ''}","${a.modalidades ? a.modalidades.join(', ') : ''}","${a.curso || ''}"\n`;
+  });
+  state.reservas.forEach((a, i) => {
+    csv += `Reserva,${i + 1},"${a.nombre}",${a.edad || ''},"${a.estudios || ''}","${a.modalidades ? a.modalidades.join(', ') : ''}","${a.curso || ''}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'seleccion_alumnos.csv';
+  a.click();
+}
+
+function getAlumnosPaginados() {
+  const filtrados = getAlumnosFiltrados();
+  const inicio = (state.paginaActual - 1) * porPagina;
+  return filtrados.slice(inicio, inicio + porPagina);
+}
+
+function getPaginasTotales() {
+  return Math.ceil(getAlumnosFiltrados().length / porPagina);
+}
+
+function renderTarjeta(alumno, esReserva, esBaseDatos) {
+  return `
+    <div class="${esReserva ? 'bg-gray-50 border-gray-300 opacity-70' : 'bg-white border-gray-200'} ${alumno.esEvitable ? 'ring-2 ring-red-500' : ''} p-3 rounded-lg border">
+      <div class="flex justify-between items-start mb-2">
+        <input type="text" value="${alumno.nombre.replace(/"/g, '&quot;')}" 
+          onchange="actualizarCampo('${alumno.id}', 'nombre', this.value)"
+          class="font-medium bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-blue-300 rounded px-1 flex-1" />
+        <div class="flex gap-1 ml-2">
+          ${esBaseDatos ? `<button onclick="toggleEvitable('${alumno.id}')" class="p-1 rounded ${alumno.esEvitable ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-400'}">X</button>` : ''}
+          <button onclick="eliminarAlumno('${alumno.id}')" class="p-1 rounded bg-red-50 text-red-500 hover:bg-red-100">X</button>
+        </div>
+      </div>
+      <div class="text-xs space-y-1">
+        ${alumno.edad !== undefined ? `<span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded text-xs">${alumno.edad} años</span>` : ''}
+        ${esNombreFemenino(alumno.nombre) ? '<span class="text-purple-600 font-medium">M</span>' : ''}
+        ${alumno.modalidades && alumno.modalidades.length > 0 ? `<span class="bg-yellow-100 text-yellow-700 px-1.5 py-0.5 rounded text-xs">${alumno.modalidades.join(', ')}</span>` : ''}
+        <input type="text" value="${(alumno.estudios || '').replace(/"/g, '&quot;')}" 
+          onchange="actualizarCampo('${alumno.id}', 'estudios', this.value)"
+          placeholder="Estudios..." 
+          class="w-full bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs" />
+        ${esBaseDatos ? `
+          <div class="flex items-center gap-1">
+            <select onchange="actualizarCampo('${alumno.id}', 'curso', this.value)"
+              class="bg-gray-50 border border-gray-200 rounded px-2 py-1 text-xs flex-1">
+              <option value="" ${!alumno.curso ? 'selected' : ''}>Sin curso</option>
+              <option value="Soldador" ${alumno.curso === 'Soldador' ? 'selected' : ''}>Soldador</option>
+              <option value="Tubero" ${alumno.curso === 'Tubero' ? 'selected' : ''}>Tubero</option>
+              <option value="Montador" ${alumno.curso === 'Montador' ? 'selected' : ''}>Montador</option>
+            </select>
+            ${alumno.seleccionado ? '<span class="bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded text-xs">ALUMNO</span>' : ''}
+            ${alumno.esReserva ? '<span class="bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded text-xs">RESERVA</span>' : ''}
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  const colorModalidad = MODALIDADES_COLORES[state.modalidadSeleccionada] || MODALIDADES_COLORES['todos'];
+  const filtrados = getAlumnosFiltrados();
+  
+  let app = `
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold" style="color: ${colorModalidad}">Seleccion de Alumnos</h1>
+      <div class="flex gap-2">
+        <button onclick="state.pestana='seleccion'; render()" class="px-4 py-2 rounded-lg ${state.pestana === 'seleccion' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'}">Seleccion</button>
+        <button onclick="state.pestana='basedatos'; render()" class="px-4 py-2 rounded-lg ${state.pestana === 'basedatos' ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 border'}">Base de Datos</button>
+      </div>
+    </div>
+  `;
+
+  if (state.pestana === 'seleccion') {
+    if (!state.alumnos.length) {
+      app += `
+        <div class="bg-white rounded-xl p-8 text-center border-2 border-dashed border-gray-300">
+          <p class="text-gray-600 mb-4">Sube tu archivo Excel con los alumnos</p>
+          <label class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700">
+            Subir Excel
+            <input type="file" accept=".xlsx,.xls,.csv" onchange="leerExcel(event)" class="hidden" />
+          </label>
+        </div>
+      `;
+    } else {
+      app += `
+        <div class="bg-white rounded-xl p-4 border">
+          <div class="flex flex-wrap gap-4 items-center">
+            <div>
+              <label class="text-xs text-gray-500 block mb-1">Modalidad</label>
+              <select onchange="state.modalidadSeleccionada=this.value; render()" class="border rounded-lg px-3 py-2">
+                ${MODALIDADES.map(m => `<option value="${m}" ${state.modalidadSeleccionada === m ? 'selected' : ''}>${m.charAt(0).toUpperCase() + m.slice(1)}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label class="text-xs text-gray-500 block mb-1">Alumnos</label>
+              <input type="number" value="${state.numPrincipales}" onchange="state.numPrincipales=Number(this.value); render()" class="border rounded-lg px-3 py-2 w-20" min="1" />
+            </div>
+            <div>
+              <label class="text-xs text-gray-500 block mb-1">Reservas</label>
+              <input type="number" value="${state.numReservas}" onchange="state.numReservas=Number(this.value); render()" class="border rounded-lg px-3 py-2 w-20" min="0" />
+            </div>
+            <div class="flex-1">
+              <div class="text-sm text-gray-600">
+                <span class="font-medium">${filtrados.length}</span> candidatos disponibles
+              </div>
+            </div>
+            <button onclick="seleccionarAleatorio()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              Generar Seleccion
+            </button>
+          </div>
+        </div>
+      `;
+      
+      if (state.seleccionados.length > 0) {
+        app += `
+          <div class="bg-white rounded-xl p-4 border mt-4">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-semibold">Alumnos Seleccionados (${state.seleccionados.length})</h2>
+              <div class="flex gap-2">
+                <button onclick="asignarCurso()" class="px-3 py-1.5 text-sm bg-gray-100 rounded-lg">Asignar curso</button>
+                <button onclick="copiarNombres()" class="px-3 py-1.5 text-sm bg-gray-100 rounded-lg">Copiar</button>
+                <button onclick="exportarCSV()" class="px-3 py-1.5 text-sm bg-gray-100 rounded-lg">CSV</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+              ${state.seleccionados.map((alumno, idx) => `
+                <div class="relative">
+                  <span class="absolute -top-2 -left-2 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+                  ${renderTarjeta(alumno, false, false)}
+                </div>
+              `).join('')}
+            </div>
+            ${state.reservas.length > 0 ? `
+              <h3 class="text-md font-semibold text-gray-500 mb-3">Reservas (${state.reservas.length})</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                ${state.reservas.map((alumno, idx) => `
+                  <div class="relative">
+                    <span class="absolute -top-2 -left-2 bg-gray-400 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+                    <button onclick="ascendeReserva('${alumno.id}')" class="absolute top-2 right-2 p-1 bg-green-100 text-green-600 rounded">↑</button>
+                    ${renderTarjeta(alumno, true, false)}
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+    }
+  }
+
+  if (state.pestana === 'basedatos') {
+    app += `
+      <div class="bg-white rounded-xl p-4 border mb-4">
+        <input type="text" placeholder="Buscar alumno..." value="${state.busqueda.replace(/"/g, '&quot;')}" oninput="state.busqueda=this.value; state.paginaActual=1; render()" class="w-full border rounded-lg px-4 py-2" />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+        ${getAlumnosPaginados().map(alumno => renderTarjeta(alumno, false, true)).join('')}
+      </div>
+      ${getPaginasTotales() > 1 ? `
+        <div class="flex justify-center items-center gap-4 mt-4">
+          <button onclick="state.paginaActual=Math.max(1, state.paginaActual-1); render()" class="px-4 py-2 bg-white border rounded-lg">←</button>
+          <span class="text-sm">Pagina ${state.paginaActual} de ${getPaginasTotales()}</span>
+          <button onclick="state.paginaActual=Math.min(${getPaginasTotales()}, state.paginaActual+1); render()" class="px-4 py-2 bg-white border rounded-lg">→</button>
+        </div>
+      ` : ''}
+    `;
+  }
+
+  document.getElementById('app').innerHTML = app;
+}
+
+render();
+</script>
+</body>
+</html>
